@@ -1,0 +1,517 @@
+module lfsr #(parameter WIDTH = 4) (
+    input wire clk,
+    input wire reset,
+	 input [3:0]countcase,
+	 input tetik_tusu,
+	 
+	 
+	 
+
+	 input fire_mode_lfsr1,
+    output [WIDTH-1:0] random_number,
+	 output reg swcontrolalt,
+	 output reg swcontrolsag,
+	 output reg swcontrolsol,
+	 output reg swcontrolust,
+	 
+	 output reg swcontrolsolust,
+	 output reg swcontrolsagust,
+	 output reg swcontrolsolalt,
+	 output reg swcontrolsagalt,
+	 
+	 
+	 output reg [4:0] total_score,
+	 output [6:0] hex0, hex1, hex2, hex3
+	 
+	 
+);
+    reg [WIDTH-1:0] lfsr_reg;
+	 
+	 
+		seven_segment display (.number(total_score),
+		.hex0(hex0), 
+		.hex1(hex1), 
+		.hex2(hex2), 
+		.hex3(hex3));
+	 
+	 
+	 
+	 
+	 
+	 
+	 
+	 reg [20:0]  true_score_value1 = 0;
+	 reg [20:0]  true_score_value2 = 0;
+	 reg [20:0]  true_score_value3 = 0;
+	 reg [20:0]  true_score_value4 = 0;
+	 reg [20:0]  true_score_value5 = 0;
+	 reg [20:0]  true_score_value6 = 0;
+	 reg [20:0]  true_score_value7 = 0;
+	 reg [20:0]  true_score_value8 = 0;
+	 
+	 
+	 always@(negedge swcontrolalt)begin
+	 true_score_value1 <= true_score_value1 +1;
+	 end
+	 
+	  always@(negedge swcontrolust)begin
+	 true_score_value2 <= true_score_value2 +1;
+	 end
+		
+	 always@(negedge swcontrolsag)begin
+	 true_score_value3 <= true_score_value3 +1;
+	 end
+	 
+	  always@(negedge swcontrolsol)begin
+	 true_score_value4 <= true_score_value4 +1;
+	 end
+	 
+	  always@(negedge swcontrolsolust)begin
+	 true_score_value5 <= true_score_value5 +1;
+	 end
+	 
+	  always@(negedge swcontrolsagust)begin
+	 true_score_value6 <= true_score_value6 +1;
+	 end
+	 
+	  always@(negedge swcontrolsolalt)begin
+	 true_score_value7 <= true_score_value7 +1;
+	 end
+	 
+	  always@(negedge swcontrolsagalt)begin
+	 true_score_value8 <= true_score_value8 +1;
+	 end
+	 
+	 always@(*)begin
+	 total_score <= true_score_value1 + true_score_value2 + true_score_value3 + true_score_value4 + true_score_value5 + true_score_value6 +true_score_value7 + true_score_value8;
+	 end
+	 
+	 
+	 
+	 
+	 
+	 
+	 
+	 
+	 
+	 
+	 
+    always @(posedge clk or posedge reset) begin
+	 
+        if (reset) begin
+            lfsr_reg <= 1;  // Reset değeri
+        end else begin
+            lfsr_reg <= {lfsr_reg[WIDTH-2:0], lfsr_reg[WIDTH-1] ^ lfsr_reg[WIDTH-2]};  // Geri besleme ve kaydırma
+        end
+    end
+
+    assign random_number = lfsr_reg;	 
+
+	//reg [3:0] hpsag;
+
+	
+	
+
+	
+	
+	
+	
+	
+	
+	
+	
+	
+
+	 always@(posedge tetik_tusu or posedge clk or posedge reset) begin
+	//tetikler
+
+	if (reset==1) begin 
+        swcontrolalt = 1;
+        swcontrolsag = 1;
+        swcontrolsol = 1;
+        swcontrolust = 1;
+        swcontrolsolust = 1;
+        swcontrolsagust = 1;
+        swcontrolsolalt = 0;
+        swcontrolsagalt = 0;
+	
+	
+	
+	
+	
+	
+	end
+	
+	
+	
+	
+	
+	else if (tetik_tusu==1) begin
+		
+		if (fire_mode_lfsr1==0)	begin	
+						if (countcase==4'b1100&&tetik_tusu==1) begin
+							
+						swcontrolsag<=0;
+						swcontrolalt<=1;
+						
+	
+				
+						end
+						
+						else if (countcase==4'b0100&&tetik_tusu==1) begin
+						swcontrolsol<=0;
+						swcontrolust<=1;
+						;
+						end
+						
+						else if (countcase==4'b0000&&tetik_tusu==1) begin
+						swcontrolust<=0;
+						swcontrolsolalt<=1;
+						
+						
+						
+						end
+						else if (countcase==4'b1000&&tetik_tusu==1) begin
+						swcontrolalt<=0;
+						swcontrolsol<=1;
+						
+						
+						end
+						
+						//caprazlar
+						else if (countcase==4'b0010&&tetik_tusu==1) begin
+						swcontrolsolust<=0;
+						swcontrolsagalt<=1;
+				
+					
+						
+						
+						end
+						else if (countcase==4'b0110&&tetik_tusu==1) begin
+						swcontrolsolalt<=0;
+						swcontrolsagust<=1;
+						
+						
+						
+						end
+						else if (countcase==4'b1010&&tetik_tusu==1) begin
+						swcontrolsagalt<=0;
+						swcontrolsolust<=1;
+						
+						
+						
+						end
+						else if (countcase==4'b1110&&tetik_tusu==1) begin
+						swcontrolsagust<=0;
+						swcontrolsag<=3;
+						//hpsag<=2'b11;
+					
+						
+						
+						//swcontrolsolust<=1;
+						
+						end
+					
+					
+					
+
+					//  missing cases here
+                else if (countcase == 4'b0001 && tetik_tusu == 1) begin
+                    swcontrolust <= 0;
+						  swcontrolsolust <= 0;
+                    swcontrolalt <= 1;
+                    
+                end else if (countcase == 4'b0011 && tetik_tusu == 1) begin
+                    swcontrolsol <= 0;
+						  swcontrolsolust <= 0;
+                    swcontrolust <= 1;
+                    
+                end else if (countcase == 4'b0101 && tetik_tusu == 1) begin
+                    swcontrolalt <= 0;
+						  swcontrolsol <= 0;
+                    swcontrolsolalt <= 1;
+                    
+                end else if (countcase == 4'b0111 && tetik_tusu == 1) begin
+                    swcontrolalt <= 0;
+						  swcontrolsolalt <= 0;
+                    swcontrolsol <= 1;
+                    
+                end else if (countcase == 4'b1001 && tetik_tusu == 1) begin
+                    swcontrolalt <= 0;
+						  
+                    swcontrolsagalt <= 0;
+						  swcontrolust <= 1;
+                   
+                end else if (countcase == 4'b1011 && tetik_tusu == 1) begin
+                    swcontrolsagalt <= 0;
+						  swcontrolsag <= 0;
+                    swcontrolsagust <= 1;
+                    
+                end else if (countcase == 4'b1101 && tetik_tusu == 1) begin
+                    swcontrolsag <= 0;
+						  swcontrolsagust <= 0;
+                    swcontrolsolust <= 1;
+                    
+                end else if (countcase == 4'b1111 && tetik_tusu == 1) begin
+                    swcontrolsagust <= 0;
+						  swcontrolust <= 0;
+                    swcontrolsolalt <= 1;
+    
+                   
+                end
+				end
+					
+					
+					
+					
+					
+					
+					
+					
+					//besli vurus  bas
+		if (fire_mode_lfsr1==1) begin
+					
+					
+						if (countcase==4'b1100&&tetik_tusu==1)	begin	
+							swcontrolsagalt<=0;
+							swcontrolsagust<=0;
+							
+							swcontrolsag<=0;
+							swcontrolalt<=1;
+							swcontrolsolalt<=1;
+							
+							
+						end
+
+				
+						
+						
+						else if (countcase==4'b0100&&tetik_tusu==1) begin
+						swcontrolsol<=0;
+						
+						swcontrolsolust<=0;
+						swcontrolsolalt<=0;
+
+						
+						
+						swcontrolust<=1;
+						swcontrolsag<=1;
+						
+						end
+						
+						else if (countcase==4'b0000&&tetik_tusu==1) begin
+						swcontrolust<=0;
+						swcontrolsolust<=0;
+						swcontrolsagust<=0;
+						
+						
+						swcontrolsolalt<=1;
+						swcontrolalt<=1;
+				
+						
+						
+						end
+						else if (countcase==4'b1000&&tetik_tusu==1) begin
+						swcontrolalt<=0;
+						swcontrolsolalt<=0;
+						swcontrolsagalt<=0;
+
+						swcontrolsol<=1;
+						swcontrolsolust<=1;
+						
+						
+						end
+						
+						//caprazlar
+						else if (countcase==4'b0010&&tetik_tusu==1) begin
+						swcontrolsolust<=0;
+						swcontrolsol<=0;
+						swcontrolust<=0;
+						
+						
+						
+						
+						
+						swcontrolsolalt<=1;
+						swcontrolsagalt<=1;
+				
+				
+						
+						
+						end
+						else if (countcase==4'b0110&&tetik_tusu==1) begin
+						swcontrolsolalt<=0;
+						swcontrolsol<=0;
+						swcontrolalt<=0;
+						
+						
+						swcontrolsagust<=1;
+						swcontrolsag<=1;
+						
+						
+						
+						end
+						else if (countcase==4'b1010&&tetik_tusu==1) begin
+						swcontrolsagalt<=0;
+						swcontrolsag<=0;
+						swcontrolalt<=0;
+						
+						
+						swcontrolsolust<=1;
+						swcontrolsolalt<=1;
+						
+						
+						
+						end
+						else if (countcase==4'b1110&&tetik_tusu==1) begin
+						swcontrolsagust<=0;
+						swcontrolsag<=0;
+						swcontrolust<=0;
+						
+						
+						swcontrolsol<=1;
+						swcontrolsagalt<=1;
+
+						
+						
+						
+						//swcontrolsolust<=1;
+						
+						end
+						//  missing cases here
+                else if (countcase == 4'b0001 && tetik_tusu == 1) begin
+                    swcontrolust <= 0;
+						  swcontrolsolust <= 0;
+                    swcontrolalt <= 1;
+                   
+                end else if (countcase == 4'b0011 && tetik_tusu == 1) begin
+                    swcontrolsol <= 0;
+						  swcontrolsolust <= 0;
+                    swcontrolust <= 1;
+                    
+                end else if (countcase == 4'b0101 && tetik_tusu == 1) begin
+                    swcontrolalt <= 0;
+						  swcontrolsol <= 0;
+                    swcontrolsolalt <= 1;
+                    
+                end else if (countcase == 4'b0111 && tetik_tusu == 1) begin
+                    swcontrolalt <= 0;
+						  swcontrolsolalt <= 0;
+                    swcontrolsol <= 1;
+                    
+                end else if (countcase == 4'b1001 && tetik_tusu == 1) begin
+                    swcontrolalt <= 0;
+						  
+                    swcontrolsagalt <= 0;
+						  swcontrolust <= 1;
+                    
+                end else if (countcase == 4'b1011 && tetik_tusu == 1) begin
+                    swcontrolsagalt <= 0;
+						  swcontrolsag <= 0;
+                    swcontrolsagust <= 1;
+                    
+                end else if (countcase == 4'b1101 && tetik_tusu == 1) begin
+                    swcontrolsag <= 0;
+						  swcontrolsagust <= 0;
+                    swcontrolsolust <= 1;
+                 
+                end else if (countcase == 4'b1111 && tetik_tusu == 1) begin
+                    swcontrolsagust <= 0;
+						  swcontrolust <= 0;
+                    swcontrolsolalt <= 1;
+    
+                    
+                end
+            
+					
+					//besli vurus son
+					end
+	end
+		
+		
+	
+	
+	
+	
+	
+	
+	
+
+	/*if (clk) begin
+			if(random_number == 4'b0010)begin
+		
+		
+		
+				swcontrolalt<=1;
+			
+			end
+			
+			
+		
+			
+			if(random_number == 4'b0100)begin
+		
+				swcontrolsag<=1;
+	
+		
+			
+			end
+			if(random_number == 4'b1001)begin
+		
+		
+				swcontrolsol<=1;
+		
+			
+			end
+			if(random_number == 4'b0110)begin
+		
+				swcontrolust<=1;
+			//dikeyler
+			
+	
+			end
+			
+			//caprazlar
+			
+			if(random_number == 4'b1110)begin
+		
+		
+				swcontrolsagust<=1;
+		
+			
+			end
+			
+			if(random_number == 4'b1010)begin
+	
+		
+				swcontrolsagalt<=1;
+		
+			
+			end			
+
+			if(random_number == 4'b0110)begin
+	
+		
+				swcontrolsolalt<=1;
+		
+			
+			end			
+			
+			if(random_number == 4'b0010)begin
+	
+		
+				swcontrolsolust<=1;
+		
+			
+			end				
+			
+		end	
+		*/
+		
+end 
+	
+
+
+	 
+	
+endmodule

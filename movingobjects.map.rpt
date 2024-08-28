@@ -1,0 +1,1101 @@
+Analysis & Synthesis report for movingobjects
+Fri Jun 14 07:18:07 2024
+Quartus II 64-Bit Version 13.1.0 Build 162 10/23/2013 SJ Web Edition
+
+
+---------------------
+; Table of Contents ;
+---------------------
+  1. Legal Notice
+  2. Analysis & Synthesis Summary
+  3. Analysis & Synthesis Settings
+  4. Parallel Compilation
+  5. Analysis & Synthesis Source Files Read
+  6. Analysis & Synthesis Resource Usage Summary
+  7. Analysis & Synthesis Resource Utilization by Entity
+  8. Analysis & Synthesis DSP Block Usage Summary
+  9. User-Specified and Inferred Latches
+ 10. Registers Removed During Synthesis
+ 11. Removed Registers Triggering Further Register Optimizations
+ 12. General Register Statistics
+ 13. Inverted Register Statistics
+ 14. Multiplexer Restructuring Statistics (Restructuring Performed)
+ 15. Parameter Settings for User Entity Instance: top:a|vga_controller:vc
+ 16. Parameter Settings for User Entity Instance: top:a|lfsr:lfsr_top
+ 17. Parameter Settings for User Entity Instance: top:a|pixel_generation_from_left:pg
+ 18. Parameter Settings for Inferred Entity Instance: top:a|seven_segment:display|lpm_divide:Mod0
+ 19. Parameter Settings for Inferred Entity Instance: top:a|seven_segment:display|lpm_divide:Div0
+ 20. Parameter Settings for Inferred Entity Instance: top:a|seven_segment:display|lpm_divide:Mod1
+ 21. Parameter Settings for Inferred Entity Instance: top:a|seven_segment:display|lpm_divide:Div1
+ 22. Parameter Settings for Inferred Entity Instance: top:a|seven_segment:display|lpm_divide:Mod2
+ 23. Parameter Settings for Inferred Entity Instance: top:a|seven_segment:display|lpm_divide:Div2
+ 24. Parameter Settings for Inferred Entity Instance: top:a|seven_segment:display|lpm_divide:Mod3
+ 25. Parameter Settings for Inferred Entity Instance: top:a|pixel_generation_from_left:pg|lpm_divide:Mod0
+ 26. Parameter Settings for Inferred Entity Instance: top:a|pixel_generation_from_left:pg|lpm_divide:Mod1
+ 27. Port Connectivity Checks: "top:a|pixel_generation_from_left:pg"
+ 28. Elapsed Time Per Partition
+ 29. Analysis & Synthesis Messages
+ 30. Analysis & Synthesis Suppressed Messages
+
+
+
+----------------
+; Legal Notice ;
+----------------
+Copyright (C) 1991-2013 Altera Corporation
+Your use of Altera Corporation's design tools, logic functions 
+and other software and tools, and its AMPP partner logic 
+functions, and any output files from any of the foregoing 
+(including device programming or simulation files), and any 
+associated documentation or information are expressly subject 
+to the terms and conditions of the Altera Program License 
+Subscription Agreement, Altera MegaCore Function License 
+Agreement, or other applicable license agreement, including, 
+without limitation, that your use is for the sole purpose of 
+programming logic devices manufactured by Altera and sold by 
+Altera or its authorized distributors.  Please refer to the 
+applicable agreement for further details.
+
+
+
++------------------------------------------------------------------------------+
+; Analysis & Synthesis Summary                                                 ;
++---------------------------------+--------------------------------------------+
+; Analysis & Synthesis Status     ; Successful - Fri Jun 14 07:18:07 2024      ;
+; Quartus II 64-Bit Version       ; 13.1.0 Build 162 10/23/2013 SJ Web Edition ;
+; Revision Name                   ; movingobjects                              ;
+; Top-level Entity Name           ; movingobjects                              ;
+; Family                          ; Cyclone V                                  ;
+; Logic utilization (in ALMs)     ; N/A                                        ;
+; Total registers                 ; 442                                        ;
+; Total pins                      ; 101                                        ;
+; Total virtual pins              ; 0                                          ;
+; Total block memory bits         ; 0                                          ;
+; Total DSP Blocks                ; 20                                         ;
+; Total HSSI RX PCSs              ; 0                                          ;
+; Total HSSI PMA RX Deserializers ; 0                                          ;
+; Total HSSI TX PCSs              ; 0                                          ;
+; Total HSSI TX Channels          ; 0                                          ;
+; Total PLLs                      ; 0                                          ;
+; Total DLLs                      ; 0                                          ;
++---------------------------------+--------------------------------------------+
+
+
++---------------------------------------------------------------------------------------------------------------------------+
+; Analysis & Synthesis Settings                                                                                             ;
++---------------------------------------------------------------------------------+--------------------+--------------------+
+; Option                                                                          ; Setting            ; Default Value      ;
++---------------------------------------------------------------------------------+--------------------+--------------------+
+; Device                                                                          ; 5CSEMA5F31C6       ;                    ;
+; Top-level entity name                                                           ; movingobjects      ; movingobjects      ;
+; Family name                                                                     ; Cyclone V          ; Cyclone IV GX      ;
+; Use smart compilation                                                           ; Off                ; Off                ;
+; Enable parallel Assembler and TimeQuest Timing Analyzer during compilation      ; On                 ; On                 ;
+; Enable compact report table                                                     ; Off                ; Off                ;
+; Restructure Multiplexers                                                        ; Auto               ; Auto               ;
+; MLAB Add Timing Constraints For Mixed-Port Feed-Through Mode Setting Don't Care ; Off                ; Off                ;
+; Create Debugging Nodes for IP Cores                                             ; Off                ; Off                ;
+; Preserve fewer node names                                                       ; On                 ; On                 ;
+; Disable OpenCore Plus hardware evaluation                                       ; Off                ; Off                ;
+; Verilog Version                                                                 ; Verilog_2001       ; Verilog_2001       ;
+; VHDL Version                                                                    ; VHDL_1993          ; VHDL_1993          ;
+; State Machine Processing                                                        ; Auto               ; Auto               ;
+; Safe State Machine                                                              ; Off                ; Off                ;
+; Extract Verilog State Machines                                                  ; On                 ; On                 ;
+; Extract VHDL State Machines                                                     ; On                 ; On                 ;
+; Ignore Verilog initial constructs                                               ; Off                ; Off                ;
+; Iteration limit for constant Verilog loops                                      ; 5000               ; 5000               ;
+; Iteration limit for non-constant Verilog loops                                  ; 250                ; 250                ;
+; Add Pass-Through Logic to Inferred RAMs                                         ; On                 ; On                 ;
+; Infer RAMs from Raw Logic                                                       ; On                 ; On                 ;
+; Parallel Synthesis                                                              ; On                 ; On                 ;
+; DSP Block Balancing                                                             ; Auto               ; Auto               ;
+; NOT Gate Push-Back                                                              ; On                 ; On                 ;
+; Power-Up Don't Care                                                             ; On                 ; On                 ;
+; Remove Redundant Logic Cells                                                    ; Off                ; Off                ;
+; Remove Duplicate Registers                                                      ; On                 ; On                 ;
+; Ignore CARRY Buffers                                                            ; Off                ; Off                ;
+; Ignore CASCADE Buffers                                                          ; Off                ; Off                ;
+; Ignore GLOBAL Buffers                                                           ; Off                ; Off                ;
+; Ignore ROW GLOBAL Buffers                                                       ; Off                ; Off                ;
+; Ignore LCELL Buffers                                                            ; Off                ; Off                ;
+; Ignore SOFT Buffers                                                             ; On                 ; On                 ;
+; Limit AHDL Integers to 32 Bits                                                  ; Off                ; Off                ;
+; Optimization Technique                                                          ; Balanced           ; Balanced           ;
+; Carry Chain Length                                                              ; 70                 ; 70                 ;
+; Auto Carry Chains                                                               ; On                 ; On                 ;
+; Auto Open-Drain Pins                                                            ; On                 ; On                 ;
+; Perform WYSIWYG Primitive Resynthesis                                           ; Off                ; Off                ;
+; Auto ROM Replacement                                                            ; On                 ; On                 ;
+; Auto RAM Replacement                                                            ; On                 ; On                 ;
+; Auto DSP Block Replacement                                                      ; On                 ; On                 ;
+; Auto Shift Register Replacement                                                 ; Auto               ; Auto               ;
+; Allow Shift Register Merging across Hierarchies                                 ; Auto               ; Auto               ;
+; Auto Clock Enable Replacement                                                   ; On                 ; On                 ;
+; Strict RAM Replacement                                                          ; Off                ; Off                ;
+; Allow Synchronous Control Signals                                               ; On                 ; On                 ;
+; Force Use of Synchronous Clear Signals                                          ; Off                ; Off                ;
+; Auto Resource Sharing                                                           ; Off                ; Off                ;
+; Allow Any RAM Size For Recognition                                              ; Off                ; Off                ;
+; Allow Any ROM Size For Recognition                                              ; Off                ; Off                ;
+; Allow Any Shift Register Size For Recognition                                   ; Off                ; Off                ;
+; Use LogicLock Constraints during Resource Balancing                             ; On                 ; On                 ;
+; Ignore translate_off and synthesis_off directives                               ; Off                ; Off                ;
+; Timing-Driven Synthesis                                                         ; On                 ; On                 ;
+; Report Parameter Settings                                                       ; On                 ; On                 ;
+; Report Source Assignments                                                       ; On                 ; On                 ;
+; Report Connectivity Checks                                                      ; On                 ; On                 ;
+; Ignore Maximum Fan-Out Assignments                                              ; Off                ; Off                ;
+; Synchronization Register Chain Length                                           ; 3                  ; 3                  ;
+; PowerPlay Power Optimization                                                    ; Normal compilation ; Normal compilation ;
+; HDL message level                                                               ; Level2             ; Level2             ;
+; Suppress Register Optimization Related Messages                                 ; Off                ; Off                ;
+; Number of Removed Registers Reported in Synthesis Report                        ; 5000               ; 5000               ;
+; Number of Swept Nodes Reported in Synthesis Report                              ; 5000               ; 5000               ;
+; Number of Inverted Registers Reported in Synthesis Report                       ; 100                ; 100                ;
+; Clock MUX Protection                                                            ; On                 ; On                 ;
+; Auto Gated Clock Conversion                                                     ; Off                ; Off                ;
+; Block Design Naming                                                             ; Auto               ; Auto               ;
+; SDC constraint protection                                                       ; Off                ; Off                ;
+; Synthesis Effort                                                                ; Auto               ; Auto               ;
+; Shift Register Replacement - Allow Asynchronous Clear Signal                    ; On                 ; On                 ;
+; Pre-Mapping Resynthesis Optimization                                            ; Off                ; Off                ;
+; Analysis & Synthesis Message Level                                              ; Medium             ; Medium             ;
+; Disable Register Merging Across Hierarchies                                     ; Auto               ; Auto               ;
+; Resource Aware Inference For Block RAM                                          ; On                 ; On                 ;
+; Synthesis Seed                                                                  ; 1                  ; 1                  ;
+; Automatic Parallel Synthesis                                                    ; On                 ; On                 ;
++---------------------------------------------------------------------------------+--------------------+--------------------+
+
+
+Parallel compilation was disabled, but you have multiple processors available. Enable parallel compilation to reduce compilation time.
++-------------------------------------+
+; Parallel Compilation                ;
++----------------------------+--------+
+; Processors                 ; Number ;
++----------------------------+--------+
+; Number detected on machine ; 12     ;
+; Maximum allowed            ; 1      ;
++----------------------------+--------+
+
+
++-----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------+
+; Analysis & Synthesis Source Files Read                                                                                                                                                  ;
++----------------------------------+-----------------+------------------------------+-------------------------------------------------------------------------------------------+---------+
+; File Name with User-Entered Path ; Used in Netlist ; File Type                    ; File Name with Absolute Path                                                              ; Library ;
++----------------------------------+-----------------+------------------------------+-------------------------------------------------------------------------------------------+---------+
+; movingobjects.v                  ; yes             ; User Verilog HDL File        ; C:/Users/Monster/Desktop/en_son_final_gösterim/movingobjects/movingobjects.v              ;         ;
+; top.v                            ; yes             ; User Verilog HDL File        ; C:/Users/Monster/Desktop/en_son_final_gösterim/movingobjects/top.v                        ;         ;
+; lfsr.v                           ; yes             ; User Verilog HDL File        ; C:/Users/Monster/Desktop/en_son_final_gösterim/movingobjects/lfsr.v                       ;         ;
+; seven_segment.v                  ; yes             ; User Verilog HDL File        ; C:/Users/Monster/Desktop/en_son_final_gösterim/movingobjects/seven_segment.v              ;         ;
+; vga_controller.v                 ; yes             ; User Verilog HDL File        ; C:/Users/Monster/Desktop/en_son_final_gösterim/movingobjects/vga_controller.v             ;         ;
+; pixel_generation_from_left.v     ; yes             ; User Verilog HDL File        ; C:/Users/Monster/Desktop/en_son_final_gösterim/movingobjects/pixel_generation_from_left.v ;         ;
+; clock_divider.v                  ; yes             ; User Verilog HDL File        ; C:/Users/Monster/Desktop/en_son_final_gösterim/movingobjects/clock_divider.v              ;         ;
+; lpm_divide.tdf                   ; yes             ; Megafunction                 ; c:/altera/13.1/quartus/libraries/megafunctions/lpm_divide.tdf                             ;         ;
+; abs_divider.inc                  ; yes             ; Megafunction                 ; c:/altera/13.1/quartus/libraries/megafunctions/abs_divider.inc                            ;         ;
+; sign_div_unsign.inc              ; yes             ; Megafunction                 ; c:/altera/13.1/quartus/libraries/megafunctions/sign_div_unsign.inc                        ;         ;
+; aglobal131.inc                   ; yes             ; Megafunction                 ; c:/altera/13.1/quartus/libraries/megafunctions/aglobal131.inc                             ;         ;
+; db/lpm_divide_92m.tdf            ; yes             ; Auto-Generated Megafunction  ; C:/Users/Monster/Desktop/en_son_final_gösterim/movingobjects/db/lpm_divide_92m.tdf        ;         ;
+; db/sign_div_unsign_ckh.tdf       ; yes             ; Auto-Generated Megafunction  ; C:/Users/Monster/Desktop/en_son_final_gösterim/movingobjects/db/sign_div_unsign_ckh.tdf   ;         ;
+; db/alt_u_div_use.tdf             ; yes             ; Auto-Generated Megafunction  ; C:/Users/Monster/Desktop/en_son_final_gösterim/movingobjects/db/alt_u_div_use.tdf         ;         ;
+; db/lpm_divide_6am.tdf            ; yes             ; Auto-Generated Megafunction  ; C:/Users/Monster/Desktop/en_son_final_gösterim/movingobjects/db/lpm_divide_6am.tdf        ;         ;
+; db/lpm_divide_9am.tdf            ; yes             ; Auto-Generated Megafunction  ; C:/Users/Monster/Desktop/en_son_final_gösterim/movingobjects/db/lpm_divide_9am.tdf        ;         ;
+; db/sign_div_unsign_fkh.tdf       ; yes             ; Auto-Generated Megafunction  ; C:/Users/Monster/Desktop/en_son_final_gösterim/movingobjects/db/sign_div_unsign_fkh.tdf   ;         ;
+; db/alt_u_div_4te.tdf             ; yes             ; Auto-Generated Megafunction  ; C:/Users/Monster/Desktop/en_son_final_gösterim/movingobjects/db/alt_u_div_4te.tdf         ;         ;
+; db/lpm_divide_jbm.tdf            ; yes             ; Auto-Generated Megafunction  ; C:/Users/Monster/Desktop/en_son_final_gösterim/movingobjects/db/lpm_divide_jbm.tdf        ;         ;
+; db/sign_div_unsign_1nh.tdf       ; yes             ; Auto-Generated Megafunction  ; C:/Users/Monster/Desktop/en_son_final_gösterim/movingobjects/db/sign_div_unsign_1nh.tdf   ;         ;
+; db/alt_u_div_82f.tdf             ; yes             ; Auto-Generated Megafunction  ; C:/Users/Monster/Desktop/en_son_final_gösterim/movingobjects/db/alt_u_div_82f.tdf         ;         ;
+; db/lpm_divide_j3m.tdf            ; yes             ; Auto-Generated Megafunction  ; C:/Users/Monster/Desktop/en_son_final_gösterim/movingobjects/db/lpm_divide_j3m.tdf        ;         ;
+; db/sign_div_unsign_mlh.tdf       ; yes             ; Auto-Generated Megafunction  ; C:/Users/Monster/Desktop/en_son_final_gösterim/movingobjects/db/sign_div_unsign_mlh.tdf   ;         ;
+; db/alt_u_div_ive.tdf             ; yes             ; Auto-Generated Megafunction  ; C:/Users/Monster/Desktop/en_son_final_gösterim/movingobjects/db/alt_u_div_ive.tdf         ;         ;
+; db/lpm_divide_i3m.tdf            ; yes             ; Auto-Generated Megafunction  ; C:/Users/Monster/Desktop/en_son_final_gösterim/movingobjects/db/lpm_divide_i3m.tdf        ;         ;
+; db/sign_div_unsign_llh.tdf       ; yes             ; Auto-Generated Megafunction  ; C:/Users/Monster/Desktop/en_son_final_gösterim/movingobjects/db/sign_div_unsign_llh.tdf   ;         ;
+; db/alt_u_div_gve.tdf             ; yes             ; Auto-Generated Megafunction  ; C:/Users/Monster/Desktop/en_son_final_gösterim/movingobjects/db/alt_u_div_gve.tdf         ;         ;
++----------------------------------+-----------------+------------------------------+-------------------------------------------------------------------------------------------+---------+
+
+
++--------------------------------------------------------------+
+; Analysis & Synthesis Resource Usage Summary                  ;
++---------------------------------------------+----------------+
+; Resource                                    ; Usage          ;
++---------------------------------------------+----------------+
+; Estimate of Logic utilization (ALMs needed) ; 1321           ;
+;                                             ;                ;
+; Combinational ALUT usage for logic          ; 2308           ;
+;     -- 7 input functions                    ; 22             ;
+;     -- 6 input functions                    ; 307            ;
+;     -- 5 input functions                    ; 283            ;
+;     -- 4 input functions                    ; 239            ;
+;     -- <=3 input functions                  ; 1457           ;
+;                                             ;                ;
+; Dedicated logic registers                   ; 442            ;
+;                                             ;                ;
+; I/O pins                                    ; 101            ;
+; Total DSP Blocks                            ; 20             ;
+; Maximum fan-out node                        ; CLOCK_50~input ;
+; Maximum fan-out                             ; 318            ;
+; Total fan-out                               ; 9933           ;
+; Average fan-out                             ; 3.34           ;
++---------------------------------------------+----------------+
+
+
++------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------+
+; Analysis & Synthesis Resource Utilization by Entity                                                                                                                                                                                                                                                        ;
++----------------------------------------------+-------------------+--------------+-------------------+------------+------+--------------+----------------------------------------------------------------------------------------------------------------------------------------------------+--------------+
+; Compilation Hierarchy Node                   ; LC Combinationals ; LC Registers ; Block Memory Bits ; DSP Blocks ; Pins ; Virtual Pins ; Full Hierarchy Name                                                                                                                                ; Library Name ;
++----------------------------------------------+-------------------+--------------+-------------------+------------+------+--------------+----------------------------------------------------------------------------------------------------------------------------------------------------+--------------+
+; |movingobjects                               ; 2308 (0)          ; 442 (0)      ; 0                 ; 20         ; 101  ; 0            ; |movingobjects                                                                                                                                     ; work         ;
+;    |top:a|                                   ; 2308 (34)         ; 442 (45)     ; 0                 ; 20         ; 0    ; 0            ; |movingobjects|top:a                                                                                                                               ; work         ;
+;       |clock_divider:cd|                     ; 42 (42)           ; 34 (34)      ; 0                 ; 0          ; 0    ; 0            ; |movingobjects|top:a|clock_divider:cd                                                                                                              ; work         ;
+;       |lfsr:lfsr_top|                        ; 184 (184)         ; 76 (76)      ; 0                 ; 0          ; 0    ; 0            ; |movingobjects|top:a|lfsr:lfsr_top                                                                                                                 ; work         ;
+;       |pixel_generation_from_left:pg|        ; 1751 (1593)       ; 244 (244)    ; 0                 ; 20         ; 0    ; 0            ; |movingobjects|top:a|pixel_generation_from_left:pg                                                                                                 ; work         ;
+;          |lpm_divide:Mod0|                   ; 86 (0)            ; 0 (0)        ; 0                 ; 0          ; 0    ; 0            ; |movingobjects|top:a|pixel_generation_from_left:pg|lpm_divide:Mod0                                                                                 ; work         ;
+;             |lpm_divide_j3m:auto_generated|  ; 86 (0)            ; 0 (0)        ; 0                 ; 0          ; 0    ; 0            ; |movingobjects|top:a|pixel_generation_from_left:pg|lpm_divide:Mod0|lpm_divide_j3m:auto_generated                                                   ; work         ;
+;                |sign_div_unsign_mlh:divider| ; 86 (0)            ; 0 (0)        ; 0                 ; 0          ; 0    ; 0            ; |movingobjects|top:a|pixel_generation_from_left:pg|lpm_divide:Mod0|lpm_divide_j3m:auto_generated|sign_div_unsign_mlh:divider                       ; work         ;
+;                   |alt_u_div_ive:divider|    ; 86 (86)           ; 0 (0)        ; 0                 ; 0          ; 0    ; 0            ; |movingobjects|top:a|pixel_generation_from_left:pg|lpm_divide:Mod0|lpm_divide_j3m:auto_generated|sign_div_unsign_mlh:divider|alt_u_div_ive:divider ; work         ;
+;          |lpm_divide:Mod1|                   ; 72 (0)            ; 0 (0)        ; 0                 ; 0          ; 0    ; 0            ; |movingobjects|top:a|pixel_generation_from_left:pg|lpm_divide:Mod1                                                                                 ; work         ;
+;             |lpm_divide_i3m:auto_generated|  ; 72 (0)            ; 0 (0)        ; 0                 ; 0          ; 0    ; 0            ; |movingobjects|top:a|pixel_generation_from_left:pg|lpm_divide:Mod1|lpm_divide_i3m:auto_generated                                                   ; work         ;
+;                |sign_div_unsign_llh:divider| ; 72 (0)            ; 0 (0)        ; 0                 ; 0          ; 0    ; 0            ; |movingobjects|top:a|pixel_generation_from_left:pg|lpm_divide:Mod1|lpm_divide_i3m:auto_generated|sign_div_unsign_llh:divider                       ; work         ;
+;                   |alt_u_div_gve:divider|    ; 72 (72)           ; 0 (0)        ; 0                 ; 0          ; 0    ; 0            ; |movingobjects|top:a|pixel_generation_from_left:pg|lpm_divide:Mod1|lpm_divide_i3m:auto_generated|sign_div_unsign_llh:divider|alt_u_div_gve:divider ; work         ;
+;       |seven_segment:display|                ; 264 (21)          ; 0 (0)        ; 0                 ; 0          ; 0    ; 0            ; |movingobjects|top:a|seven_segment:display                                                                                                         ; work         ;
+;          |lpm_divide:Div0|                   ; 60 (0)            ; 0 (0)        ; 0                 ; 0          ; 0    ; 0            ; |movingobjects|top:a|seven_segment:display|lpm_divide:Div0                                                                                         ; work         ;
+;             |lpm_divide_6am:auto_generated|  ; 60 (0)            ; 0 (0)        ; 0                 ; 0          ; 0    ; 0            ; |movingobjects|top:a|seven_segment:display|lpm_divide:Div0|lpm_divide_6am:auto_generated                                                           ; work         ;
+;                |sign_div_unsign_ckh:divider| ; 60 (0)            ; 0 (0)        ; 0                 ; 0          ; 0    ; 0            ; |movingobjects|top:a|seven_segment:display|lpm_divide:Div0|lpm_divide_6am:auto_generated|sign_div_unsign_ckh:divider                               ; work         ;
+;                   |alt_u_div_use:divider|    ; 60 (60)           ; 0 (0)        ; 0                 ; 0          ; 0    ; 0            ; |movingobjects|top:a|seven_segment:display|lpm_divide:Div0|lpm_divide_6am:auto_generated|sign_div_unsign_ckh:divider|alt_u_div_use:divider         ; work         ;
+;          |lpm_divide:Div1|                   ; 41 (0)            ; 0 (0)        ; 0                 ; 0          ; 0    ; 0            ; |movingobjects|top:a|seven_segment:display|lpm_divide:Div1                                                                                         ; work         ;
+;             |lpm_divide_9am:auto_generated|  ; 41 (0)            ; 0 (0)        ; 0                 ; 0          ; 0    ; 0            ; |movingobjects|top:a|seven_segment:display|lpm_divide:Div1|lpm_divide_9am:auto_generated                                                           ; work         ;
+;                |sign_div_unsign_fkh:divider| ; 41 (0)            ; 0 (0)        ; 0                 ; 0          ; 0    ; 0            ; |movingobjects|top:a|seven_segment:display|lpm_divide:Div1|lpm_divide_9am:auto_generated|sign_div_unsign_fkh:divider                               ; work         ;
+;                   |alt_u_div_4te:divider|    ; 41 (41)           ; 0 (0)        ; 0                 ; 0          ; 0    ; 0            ; |movingobjects|top:a|seven_segment:display|lpm_divide:Div1|lpm_divide_9am:auto_generated|sign_div_unsign_fkh:divider|alt_u_div_4te:divider         ; work         ;
+;          |lpm_divide:Div2|                   ; 11 (0)            ; 0 (0)        ; 0                 ; 0          ; 0    ; 0            ; |movingobjects|top:a|seven_segment:display|lpm_divide:Div2                                                                                         ; work         ;
+;             |lpm_divide_jbm:auto_generated|  ; 11 (0)            ; 0 (0)        ; 0                 ; 0          ; 0    ; 0            ; |movingobjects|top:a|seven_segment:display|lpm_divide:Div2|lpm_divide_jbm:auto_generated                                                           ; work         ;
+;                |sign_div_unsign_1nh:divider| ; 11 (0)            ; 0 (0)        ; 0                 ; 0          ; 0    ; 0            ; |movingobjects|top:a|seven_segment:display|lpm_divide:Div2|lpm_divide_jbm:auto_generated|sign_div_unsign_1nh:divider                               ; work         ;
+;                   |alt_u_div_82f:divider|    ; 11 (11)           ; 0 (0)        ; 0                 ; 0          ; 0    ; 0            ; |movingobjects|top:a|seven_segment:display|lpm_divide:Div2|lpm_divide_jbm:auto_generated|sign_div_unsign_1nh:divider|alt_u_div_82f:divider         ; work         ;
+;          |lpm_divide:Mod0|                   ; 64 (0)            ; 0 (0)        ; 0                 ; 0          ; 0    ; 0            ; |movingobjects|top:a|seven_segment:display|lpm_divide:Mod0                                                                                         ; work         ;
+;             |lpm_divide_92m:auto_generated|  ; 64 (0)            ; 0 (0)        ; 0                 ; 0          ; 0    ; 0            ; |movingobjects|top:a|seven_segment:display|lpm_divide:Mod0|lpm_divide_92m:auto_generated                                                           ; work         ;
+;                |sign_div_unsign_ckh:divider| ; 64 (0)            ; 0 (0)        ; 0                 ; 0          ; 0    ; 0            ; |movingobjects|top:a|seven_segment:display|lpm_divide:Mod0|lpm_divide_92m:auto_generated|sign_div_unsign_ckh:divider                               ; work         ;
+;                   |alt_u_div_use:divider|    ; 64 (64)           ; 0 (0)        ; 0                 ; 0          ; 0    ; 0            ; |movingobjects|top:a|seven_segment:display|lpm_divide:Mod0|lpm_divide_92m:auto_generated|sign_div_unsign_ckh:divider|alt_u_div_use:divider         ; work         ;
+;          |lpm_divide:Mod1|                   ; 49 (0)            ; 0 (0)        ; 0                 ; 0          ; 0    ; 0            ; |movingobjects|top:a|seven_segment:display|lpm_divide:Mod1                                                                                         ; work         ;
+;             |lpm_divide_92m:auto_generated|  ; 49 (0)            ; 0 (0)        ; 0                 ; 0          ; 0    ; 0            ; |movingobjects|top:a|seven_segment:display|lpm_divide:Mod1|lpm_divide_92m:auto_generated                                                           ; work         ;
+;                |sign_div_unsign_ckh:divider| ; 49 (0)            ; 0 (0)        ; 0                 ; 0          ; 0    ; 0            ; |movingobjects|top:a|seven_segment:display|lpm_divide:Mod1|lpm_divide_92m:auto_generated|sign_div_unsign_ckh:divider                               ; work         ;
+;                   |alt_u_div_use:divider|    ; 49 (49)           ; 0 (0)        ; 0                 ; 0          ; 0    ; 0            ; |movingobjects|top:a|seven_segment:display|lpm_divide:Mod1|lpm_divide_92m:auto_generated|sign_div_unsign_ckh:divider|alt_u_div_use:divider         ; work         ;
+;          |lpm_divide:Mod2|                   ; 18 (0)            ; 0 (0)        ; 0                 ; 0          ; 0    ; 0            ; |movingobjects|top:a|seven_segment:display|lpm_divide:Mod2                                                                                         ; work         ;
+;             |lpm_divide_92m:auto_generated|  ; 18 (0)            ; 0 (0)        ; 0                 ; 0          ; 0    ; 0            ; |movingobjects|top:a|seven_segment:display|lpm_divide:Mod2|lpm_divide_92m:auto_generated                                                           ; work         ;
+;                |sign_div_unsign_ckh:divider| ; 18 (0)            ; 0 (0)        ; 0                 ; 0          ; 0    ; 0            ; |movingobjects|top:a|seven_segment:display|lpm_divide:Mod2|lpm_divide_92m:auto_generated|sign_div_unsign_ckh:divider                               ; work         ;
+;                   |alt_u_div_use:divider|    ; 18 (18)           ; 0 (0)        ; 0                 ; 0          ; 0    ; 0            ; |movingobjects|top:a|seven_segment:display|lpm_divide:Mod2|lpm_divide_92m:auto_generated|sign_div_unsign_ckh:divider|alt_u_div_use:divider         ; work         ;
+;       |vga_controller:vc|                    ; 33 (33)           ; 43 (43)      ; 0                 ; 0          ; 0    ; 0            ; |movingobjects|top:a|vga_controller:vc                                                                                                             ; work         ;
++----------------------------------------------+-------------------+--------------+-------------------+------------+------+--------------+----------------------------------------------------------------------------------------------------------------------------------------------------+--------------+
+Note: For table entries with two numbers listed, the numbers in parentheses indicate the number of resources of the given type used by the specific entity alone. The numbers listed outside of parentheses indicate the total resources of the given type used by the specific entity and all of its sub-entities in the hierarchy.
+
+
++-----------------------------------------------------------------------------+
+; Analysis & Synthesis DSP Block Usage Summary                                ;
++---------------------+-------------+---------------------+-------------------+
+; Statistic           ; Number Used ; Available per Block ; Maximum Available ;
++---------------------+-------------+---------------------+-------------------+
+; Independent 18x18   ; 10          ; 2.00                ; --                ;
+; Sum of two 18x18    ; 10          ; 1.00                ; --                ;
+; DSP Block           ; 20          ; --                  ; --                ;
+; DSP 18-bit Element  ; 30          ; 2.00                ; --                ;
+; Unsigned Multiplier ; 30          ; --                  ; --                ;
++---------------------+-------------+---------------------+-------------------+
+
+
++-------------------------------------------------------------------------------------------------------------------+
+; User-Specified and Inferred Latches                                                                               ;
++----------------------------------------------------+-------------------------------------+------------------------+
+; Latch Name                                         ; Latch Enable Signal                 ; Free of Timing Hazards ;
++----------------------------------------------------+-------------------------------------+------------------------+
+; top:a|lfsr:lfsr_top|swcontrolsol                   ; top:a|lfsr:lfsr_top|swcontrolsol    ; yes                    ;
+; top:a|lfsr:lfsr_top|swcontrolsag                   ; top:a|lfsr:lfsr_top|swcontrolsag    ; yes                    ;
+; top:a|lfsr:lfsr_top|swcontrolust                   ; top:a|lfsr:lfsr_top|swcontrolust    ; yes                    ;
+; top:a|lfsr:lfsr_top|swcontrolalt                   ; top:a|lfsr:lfsr_top|swcontrolalt    ; yes                    ;
+; top:a|lfsr:lfsr_top|swcontrolsolust                ; top:a|lfsr:lfsr_top|swcontrolsolust ; yes                    ;
+; top:a|lfsr:lfsr_top|swcontrolsagust                ; top:a|lfsr:lfsr_top|swcontrolsagust ; yes                    ;
+; top:a|lfsr:lfsr_top|swcontrolsagalt                ; top:a|lfsr:lfsr_top|swcontrolsagalt ; yes                    ;
+; top:a|lfsr:lfsr_top|swcontrolsolalt                ; top:a|lfsr:lfsr_top|swcontrolsolalt ; yes                    ;
+; Number of user-specified and inferred latches = 8  ;                                     ;                        ;
++----------------------------------------------------+-------------------------------------+------------------------+
+Note: All latches listed above may not be present at the end of synthesis due to various synthesis optimizations.
+
+
++--------------------------------------------------------------------------------------------------------------------------------+
+; Registers Removed During Synthesis                                                                                             ;
++--------------------------------------------------------------+-----------------------------------------------------------------+
+; Register name                                                ; Reason for Removal                                              ;
++--------------------------------------------------------------+-----------------------------------------------------------------+
+; top:a|pixel_generation_from_left:pg|circle_y_reg[8,9]        ; Stuck at GND due to stuck port data_in                          ;
+; top:a|pixel_generation_from_left:pg|circle_y_reg[4..7]       ; Stuck at VCC due to stuck port data_in                          ;
+; top:a|pixel_generation_from_left:pg|circle_y_reg[0..3]       ; Stuck at GND due to stuck port data_in                          ;
+; top:a|pixel_generation_from_left:pg|circle_y1_reg[8,9]       ; Stuck at GND due to stuck port data_in                          ;
+; top:a|pixel_generation_from_left:pg|circle_y1_reg[4..7]      ; Stuck at VCC due to stuck port data_in                          ;
+; top:a|pixel_generation_from_left:pg|circle_y1_reg[0..3]      ; Stuck at GND due to stuck port data_in                          ;
+; top:a|pixel_generation_from_left:pg|circle_x2_reg[9]         ; Stuck at GND due to stuck port data_in                          ;
+; top:a|pixel_generation_from_left:pg|circle_x2_reg[8]         ; Stuck at VCC due to stuck port data_in                          ;
+; top:a|pixel_generation_from_left:pg|circle_x2_reg[7]         ; Stuck at GND due to stuck port data_in                          ;
+; top:a|pixel_generation_from_left:pg|circle_x2_reg[6]         ; Stuck at VCC due to stuck port data_in                          ;
+; top:a|pixel_generation_from_left:pg|circle_x2_reg[0..5]      ; Stuck at GND due to stuck port data_in                          ;
+; top:a|pixel_generation_from_left:pg|circle_x3_reg[9]         ; Stuck at GND due to stuck port data_in                          ;
+; top:a|pixel_generation_from_left:pg|circle_x3_reg[8]         ; Stuck at VCC due to stuck port data_in                          ;
+; top:a|pixel_generation_from_left:pg|circle_x3_reg[7]         ; Stuck at GND due to stuck port data_in                          ;
+; top:a|pixel_generation_from_left:pg|circle_x3_reg[6]         ; Stuck at VCC due to stuck port data_in                          ;
+; top:a|pixel_generation_from_left:pg|circle_x3_reg[0..5]      ; Stuck at GND due to stuck port data_in                          ;
+; top:a|pixel_generation_from_left:pg|bit_3[4..6]              ; Stuck at GND due to stuck port data_in                          ;
+; top:a|pixel_generation_from_left:pg|bit_2[5,6]               ; Merged with top:a|pixel_generation_from_left:pg|bit_2[4]        ;
+; top:a|pixel_generation_from_left:pg|x7_delta_reg[2..9]       ; Merged with top:a|pixel_generation_from_left:pg|x7_delta_reg[1] ;
+; top:a|pixel_generation_from_left:pg|slow_counter_1[0]        ; Merged with top:a|pixel_generation_from_left:pg|slow_counter[0] ;
+; top:a|pixel_generation_from_left:pg|slow_counter_2[0]        ; Merged with top:a|pixel_generation_from_left:pg|slow_counter[0] ;
+; top:a|pixel_generation_from_left:pg|slow_counter_3[0]        ; Merged with top:a|pixel_generation_from_left:pg|slow_counter[0] ;
+; top:a|pixel_generation_from_left:pg|slow_counter_1[1]        ; Merged with top:a|pixel_generation_from_left:pg|slow_counter[1] ;
+; top:a|pixel_generation_from_left:pg|slow_counter_2[1]        ; Merged with top:a|pixel_generation_from_left:pg|slow_counter[1] ;
+; top:a|pixel_generation_from_left:pg|slow_counter_3[1]        ; Merged with top:a|pixel_generation_from_left:pg|slow_counter[1] ;
+; top:a|pixel_generation_from_left:pg|y7_delta_reg[4,6..9]     ; Merged with top:a|pixel_generation_from_left:pg|y7_delta_reg[3] ;
+; top:a|pixel_generation_from_left:pg|y7_delta_reg[2,5]        ; Merged with top:a|pixel_generation_from_left:pg|y7_delta_reg[1] ;
+; top:a|pixel_generation_from_left:pg|x6_delta_reg[2..9]       ; Merged with top:a|pixel_generation_from_left:pg|x6_delta_reg[1] ;
+; top:a|pixel_generation_from_left:pg|y6_delta_reg[4,6..9]     ; Merged with top:a|pixel_generation_from_left:pg|y6_delta_reg[3] ;
+; top:a|pixel_generation_from_left:pg|y6_delta_reg[2,5]        ; Merged with top:a|pixel_generation_from_left:pg|y6_delta_reg[1] ;
+; top:a|pixel_generation_from_left:pg|x5_delta_reg[5,7..9]     ; Merged with top:a|pixel_generation_from_left:pg|x5_delta_reg[4] ;
+; top:a|pixel_generation_from_left:pg|x5_delta_reg[2,3,6]      ; Merged with top:a|pixel_generation_from_left:pg|x5_delta_reg[1] ;
+; top:a|pixel_generation_from_left:pg|y5_delta_reg[2..9]       ; Merged with top:a|pixel_generation_from_left:pg|y5_delta_reg[1] ;
+; top:a|pixel_generation_from_left:pg|x4_delta_reg[2,3,5,7..9] ; Merged with top:a|pixel_generation_from_left:pg|x4_delta_reg[1] ;
+; top:a|pixel_generation_from_left:pg|x4_delta_reg[6]          ; Merged with top:a|pixel_generation_from_left:pg|x4_delta_reg[4] ;
+; top:a|pixel_generation_from_left:pg|y4_delta_reg[2..9]       ; Merged with top:a|pixel_generation_from_left:pg|y4_delta_reg[1] ;
+; top:a|pixel_generation_from_left:pg|bit_2[4]                 ; Stuck at GND due to stuck port data_in                          ;
+; top:a|lfsr:lfsr_top|true_score_value7[9..20]                 ; Lost fanout                                                     ;
+; top:a|lfsr:lfsr_top|true_score_value8[9..20]                 ; Lost fanout                                                     ;
+; top:a|lfsr:lfsr_top|true_score_value5[9..20]                 ; Lost fanout                                                     ;
+; top:a|lfsr:lfsr_top|true_score_value6[9..20]                 ; Lost fanout                                                     ;
+; top:a|lfsr:lfsr_top|true_score_value3[9..20]                 ; Lost fanout                                                     ;
+; top:a|lfsr:lfsr_top|true_score_value4[9..20]                 ; Lost fanout                                                     ;
+; top:a|lfsr:lfsr_top|true_score_value1[9..20]                 ; Lost fanout                                                     ;
+; top:a|lfsr:lfsr_top|true_score_value2[9..20]                 ; Lost fanout                                                     ;
+; Total Number of Removed Registers = 208                      ;                                                                 ;
++--------------------------------------------------------------+-----------------------------------------------------------------+
+
+
++-------------------------------------------------------------------------------------------------------------+
+; Removed Registers Triggering Further Register Optimizations                                                 ;
++-------------------------------------------+--------------------+--------------------------------------------+
+; Register name                             ; Reason for Removal ; Registers Removed due to This Register     ;
++-------------------------------------------+--------------------+--------------------------------------------+
+; top:a|lfsr:lfsr_top|true_score_value7[20] ; Lost Fanouts       ; top:a|lfsr:lfsr_top|true_score_value7[19], ;
+;                                           ;                    ; top:a|lfsr:lfsr_top|true_score_value7[18], ;
+;                                           ;                    ; top:a|lfsr:lfsr_top|true_score_value7[17], ;
+;                                           ;                    ; top:a|lfsr:lfsr_top|true_score_value7[16], ;
+;                                           ;                    ; top:a|lfsr:lfsr_top|true_score_value7[15], ;
+;                                           ;                    ; top:a|lfsr:lfsr_top|true_score_value7[14], ;
+;                                           ;                    ; top:a|lfsr:lfsr_top|true_score_value7[13], ;
+;                                           ;                    ; top:a|lfsr:lfsr_top|true_score_value7[12], ;
+;                                           ;                    ; top:a|lfsr:lfsr_top|true_score_value7[11], ;
+;                                           ;                    ; top:a|lfsr:lfsr_top|true_score_value7[10], ;
+;                                           ;                    ; top:a|lfsr:lfsr_top|true_score_value7[9]   ;
+; top:a|lfsr:lfsr_top|true_score_value8[20] ; Lost Fanouts       ; top:a|lfsr:lfsr_top|true_score_value8[19], ;
+;                                           ;                    ; top:a|lfsr:lfsr_top|true_score_value8[18], ;
+;                                           ;                    ; top:a|lfsr:lfsr_top|true_score_value8[17], ;
+;                                           ;                    ; top:a|lfsr:lfsr_top|true_score_value8[16], ;
+;                                           ;                    ; top:a|lfsr:lfsr_top|true_score_value8[15], ;
+;                                           ;                    ; top:a|lfsr:lfsr_top|true_score_value8[14], ;
+;                                           ;                    ; top:a|lfsr:lfsr_top|true_score_value8[13], ;
+;                                           ;                    ; top:a|lfsr:lfsr_top|true_score_value8[12], ;
+;                                           ;                    ; top:a|lfsr:lfsr_top|true_score_value8[11], ;
+;                                           ;                    ; top:a|lfsr:lfsr_top|true_score_value8[10], ;
+;                                           ;                    ; top:a|lfsr:lfsr_top|true_score_value8[9]   ;
+; top:a|lfsr:lfsr_top|true_score_value5[20] ; Lost Fanouts       ; top:a|lfsr:lfsr_top|true_score_value5[19], ;
+;                                           ;                    ; top:a|lfsr:lfsr_top|true_score_value5[18], ;
+;                                           ;                    ; top:a|lfsr:lfsr_top|true_score_value5[17], ;
+;                                           ;                    ; top:a|lfsr:lfsr_top|true_score_value5[16], ;
+;                                           ;                    ; top:a|lfsr:lfsr_top|true_score_value5[15], ;
+;                                           ;                    ; top:a|lfsr:lfsr_top|true_score_value5[14], ;
+;                                           ;                    ; top:a|lfsr:lfsr_top|true_score_value5[13], ;
+;                                           ;                    ; top:a|lfsr:lfsr_top|true_score_value5[12], ;
+;                                           ;                    ; top:a|lfsr:lfsr_top|true_score_value5[11], ;
+;                                           ;                    ; top:a|lfsr:lfsr_top|true_score_value5[10], ;
+;                                           ;                    ; top:a|lfsr:lfsr_top|true_score_value5[9]   ;
+; top:a|lfsr:lfsr_top|true_score_value6[20] ; Lost Fanouts       ; top:a|lfsr:lfsr_top|true_score_value6[19], ;
+;                                           ;                    ; top:a|lfsr:lfsr_top|true_score_value6[18], ;
+;                                           ;                    ; top:a|lfsr:lfsr_top|true_score_value6[17], ;
+;                                           ;                    ; top:a|lfsr:lfsr_top|true_score_value6[16], ;
+;                                           ;                    ; top:a|lfsr:lfsr_top|true_score_value6[15], ;
+;                                           ;                    ; top:a|lfsr:lfsr_top|true_score_value6[14], ;
+;                                           ;                    ; top:a|lfsr:lfsr_top|true_score_value6[13], ;
+;                                           ;                    ; top:a|lfsr:lfsr_top|true_score_value6[12], ;
+;                                           ;                    ; top:a|lfsr:lfsr_top|true_score_value6[11], ;
+;                                           ;                    ; top:a|lfsr:lfsr_top|true_score_value6[10], ;
+;                                           ;                    ; top:a|lfsr:lfsr_top|true_score_value6[9]   ;
++-------------------------------------------+--------------------+--------------------------------------------+
+
+
++------------------------------------------------------+
+; General Register Statistics                          ;
++----------------------------------------------+-------+
+; Statistic                                    ; Value ;
++----------------------------------------------+-------+
+; Total registers                              ; 442   ;
+; Number of registers using Synchronous Clear  ; 190   ;
+; Number of registers using Synchronous Load   ; 3     ;
+; Number of registers using Asynchronous Clear ; 278   ;
+; Number of registers using Asynchronous Load  ; 0     ;
+; Number of registers using Clock Enable       ; 251   ;
+; Number of registers using Preset             ; 0     ;
++----------------------------------------------+-------+
+
+
++----------------------------------------------------------------+
+; Inverted Register Statistics                                   ;
++------------------------------------------------------+---------+
+; Inverted Register                                    ; Fan out ;
++------------------------------------------------------+---------+
+; top:a|lfsr:lfsr_top|lfsr_reg[0]                      ; 2       ;
+; top:a|pixel_generation_from_left:pg|plus_x6_reg[9]   ; 5       ;
+; top:a|pixel_generation_from_left:pg|plus_x6_reg[5]   ; 4       ;
+; top:a|pixel_generation_from_left:pg|plus_x6_reg[4]   ; 4       ;
+; top:a|pixel_generation_from_left:pg|plus_y6_reg[8]   ; 5       ;
+; top:a|pixel_generation_from_left:pg|plus_y6_reg[7]   ; 4       ;
+; top:a|pixel_generation_from_left:pg|plus_y6_reg[6]   ; 4       ;
+; top:a|pixel_generation_from_left:pg|plus_y6_reg[5]   ; 4       ;
+; top:a|pixel_generation_from_left:pg|plus_x7_reg[4]   ; 4       ;
+; top:a|pixel_generation_from_left:pg|plus_x7_reg[6]   ; 5       ;
+; top:a|pixel_generation_from_left:pg|plus_y7_reg[7]   ; 5       ;
+; top:a|pixel_generation_from_left:pg|plus_y7_reg[6]   ; 5       ;
+; top:a|pixel_generation_from_left:pg|plus_y7_reg[5]   ; 5       ;
+; top:a|pixel_generation_from_left:pg|plus_y7_reg[8]   ; 5       ;
+; top:a|pixel_generation_from_left:pg|plus_x5_reg[9]   ; 6       ;
+; top:a|pixel_generation_from_left:pg|plus_x5_reg[5]   ; 5       ;
+; top:a|pixel_generation_from_left:pg|plus_x5_reg[4]   ; 5       ;
+; top:a|pixel_generation_from_left:pg|plus_x4_reg[4]   ; 5       ;
+; top:a|pixel_generation_from_left:pg|plus_x4_reg[6]   ; 7       ;
+; top:a|pixel_generation_from_left:pg|circle_y3_reg[6] ; 3       ;
+; top:a|pixel_generation_from_left:pg|circle_y3_reg[7] ; 3       ;
+; top:a|pixel_generation_from_left:pg|circle_y3_reg[8] ; 3       ;
+; top:a|pixel_generation_from_left:pg|circle_y3_reg[5] ; 3       ;
+; top:a|pixel_generation_from_left:pg|circle_x1_reg[9] ; 3       ;
+; top:a|pixel_generation_from_left:pg|circle_x1_reg[7] ; 3       ;
+; top:a|pixel_generation_from_left:pg|y6_delta_reg[3]  ; 6       ;
+; top:a|pixel_generation_from_left:pg|y7_delta_reg[3]  ; 6       ;
+; top:a|pixel_generation_from_left:pg|x5_delta_reg[4]  ; 5       ;
+; top:a|pixel_generation_from_left:pg|x4_delta_reg[4]  ; 2       ;
+; Total number of inverted registers = 29              ;         ;
++------------------------------------------------------+---------+
+
+
++-----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------+
+; Multiplexer Restructuring Statistics (Restructuring Performed)                                                                                                                    ;
++--------------------+-----------+---------------+----------------------+------------------------+------------+---------------------------------------------------------------------+
+; Multiplexer Inputs ; Bus Width ; Baseline Area ; Area if Restructured ; Saving if Restructured ; Registered ; Example Multiplexer Output                                          ;
++--------------------+-----------+---------------+----------------------+------------------------+------------+---------------------------------------------------------------------+
+; 3:1                ; 14 bits   ; 28 LEs        ; 0 LEs                ; 28 LEs                 ; Yes        ; |movingobjects|top:a|pixel_generation_from_left:pg|plus_x7_reg[1]   ;
+; 3:1                ; 13 bits   ; 26 LEs        ; 0 LEs                ; 26 LEs                 ; Yes        ; |movingobjects|top:a|pixel_generation_from_left:pg|plus_x6_reg[0]   ;
+; 3:1                ; 17 bits   ; 34 LEs        ; 0 LEs                ; 34 LEs                 ; Yes        ; |movingobjects|top:a|pixel_generation_from_left:pg|plus_y5_reg[9]   ;
+; 3:1                ; 18 bits   ; 36 LEs        ; 0 LEs                ; 36 LEs                 ; Yes        ; |movingobjects|top:a|pixel_generation_from_left:pg|plus_y4_reg[9]   ;
+; 3:1                ; 2 bits    ; 4 LEs         ; 4 LEs                ; 0 LEs                  ; Yes        ; |movingobjects|top:a|pixel_generation_from_left:pg|x7_delta_reg[1]  ;
+; 3:1                ; 2 bits    ; 4 LEs         ; 4 LEs                ; 0 LEs                  ; Yes        ; |movingobjects|top:a|pixel_generation_from_left:pg|x6_delta_reg[1]  ;
+; 3:1                ; 2 bits    ; 4 LEs         ; 4 LEs                ; 0 LEs                  ; Yes        ; |movingobjects|top:a|pixel_generation_from_left:pg|y5_delta_reg[0]  ;
+; 3:1                ; 2 bits    ; 4 LEs         ; 4 LEs                ; 0 LEs                  ; Yes        ; |movingobjects|top:a|pixel_generation_from_left:pg|y4_delta_reg[1]  ;
+; 4:1                ; 5 bits    ; 10 LEs        ; 10 LEs               ; 0 LEs                  ; Yes        ; |movingobjects|top:a|pixel_generation_from_left:pg|tick_counter3[4] ;
+; 4:1                ; 6 bits    ; 12 LEs        ; 6 LEs                ; 6 LEs                  ; Yes        ; |movingobjects|top:a|pixel_generation_from_left:pg|circle_y3_reg[0] ;
+; 4:1                ; 5 bits    ; 10 LEs        ; 10 LEs               ; 0 LEs                  ; Yes        ; |movingobjects|top:a|pixel_generation_from_left:pg|tick_counter2[4] ;
+; 4:1                ; 10 bits   ; 20 LEs        ; 0 LEs                ; 20 LEs                 ; Yes        ; |movingobjects|top:a|pixel_generation_from_left:pg|circle_y2_reg[5] ;
+; 4:1                ; 5 bits    ; 10 LEs        ; 10 LEs               ; 0 LEs                  ; Yes        ; |movingobjects|top:a|pixel_generation_from_left:pg|tick_counter1[3] ;
+; 4:1                ; 8 bits    ; 16 LEs        ; 0 LEs                ; 16 LEs                 ; Yes        ; |movingobjects|top:a|pixel_generation_from_left:pg|circle_x1_reg[8] ;
+; 4:1                ; 5 bits    ; 10 LEs        ; 10 LEs               ; 0 LEs                  ; Yes        ; |movingobjects|top:a|pixel_generation_from_left:pg|tick_counter0[0] ;
+; 4:1                ; 10 bits   ; 20 LEs        ; 0 LEs                ; 20 LEs                 ; Yes        ; |movingobjects|top:a|pixel_generation_from_left:pg|circle_x_reg[3]  ;
+; 256:1              ; 3 bits    ; 510 LEs       ; 6 LEs                ; 504 LEs                ; Yes        ; |movingobjects|top:a|pixel_generation_from_left:pg|bit_2[2]         ;
+; 10:1               ; 2 bits    ; 12 LEs        ; 12 LEs               ; 0 LEs                  ; Yes        ; |movingobjects|top:a|red_reg[7]                                     ;
+; 14:1               ; 2 bits    ; 18 LEs        ; 18 LEs               ; 0 LEs                  ; Yes        ; |movingobjects|top:a|blue_reg[0]                                    ;
+; 3:1                ; 6 bits    ; 12 LEs        ; 6 LEs                ; 6 LEs                  ; Yes        ; |movingobjects|top:a|pixel_generation_from_left:pg|plus_x7_reg[6]   ;
+; 3:1                ; 7 bits    ; 14 LEs        ; 7 LEs                ; 7 LEs                  ; Yes        ; |movingobjects|top:a|pixel_generation_from_left:pg|plus_y6_reg[8]   ;
+; 3:1                ; 3 bits    ; 6 LEs         ; 3 LEs                ; 3 LEs                  ; Yes        ; |movingobjects|top:a|pixel_generation_from_left:pg|plus_x5_reg[5]   ;
+; 3:1                ; 2 bits    ; 4 LEs         ; 2 LEs                ; 2 LEs                  ; Yes        ; |movingobjects|top:a|pixel_generation_from_left:pg|plus_x4_reg[6]   ;
+; 4:1                ; 4 bits    ; 8 LEs         ; 4 LEs                ; 4 LEs                  ; Yes        ; |movingobjects|top:a|pixel_generation_from_left:pg|circle_y3_reg[7] ;
+; 4:1                ; 2 bits    ; 4 LEs         ; 2 LEs                ; 2 LEs                  ; Yes        ; |movingobjects|top:a|pixel_generation_from_left:pg|circle_x1_reg[9] ;
+; 6:1                ; 2 bits    ; 8 LEs         ; 2 LEs                ; 6 LEs                  ; No         ; |movingobjects|top:a|lfsr:lfsr_top|swcontrolsagust                  ;
+; 10:1               ; 2 bits    ; 12 LEs        ; 12 LEs               ; 0 LEs                  ; No         ; |movingobjects|top:a|pixel_generation_from_left:pg|blue[1]          ;
++--------------------+-----------+---------------+----------------------+------------------------+------------+---------------------------------------------------------------------+
+
+
++----------------------------------------------------------------------+
+; Parameter Settings for User Entity Instance: top:a|vga_controller:vc ;
++----------------+-------+---------------------------------------------+
+; Parameter Name ; Value ; Type                                        ;
++----------------+-------+---------------------------------------------+
+; HD             ; 640   ; Signed Integer                              ;
+; HF             ; 48    ; Signed Integer                              ;
+; HB             ; 16    ; Signed Integer                              ;
+; HR             ; 96    ; Signed Integer                              ;
+; HMAX           ; 799   ; Signed Integer                              ;
+; VD             ; 480   ; Signed Integer                              ;
+; VF             ; 10    ; Signed Integer                              ;
+; VB             ; 33    ; Signed Integer                              ;
+; VR             ; 2     ; Signed Integer                              ;
+; VMAX           ; 524   ; Signed Integer                              ;
++----------------+-------+---------------------------------------------+
+Note: In order to hide this table in the UI and the text report file, please set the "Show Parameter Settings in Synthesis Report" option in "Analysis and Synthesis Settings -> More Settings" to "Off".
+
+
++------------------------------------------------------------------+
+; Parameter Settings for User Entity Instance: top:a|lfsr:lfsr_top ;
++----------------+-------+-----------------------------------------+
+; Parameter Name ; Value ; Type                                    ;
++----------------+-------+-----------------------------------------+
+; WIDTH          ; 4     ; Signed Integer                          ;
++----------------+-------+-----------------------------------------+
+Note: In order to hide this table in the UI and the text report file, please set the "Show Parameter Settings in Synthesis Report" option in "Analysis and Synthesis Settings -> More Settings" to "Off".
+
+
++----------------------------------------------------------------------------------+
+; Parameter Settings for User Entity Instance: top:a|pixel_generation_from_left:pg ;
++-------------------+----------+---------------------------------------------------+
+; Parameter Name    ; Value    ; Type                                              ;
++-------------------+----------+---------------------------------------------------+
+; SQUARE_SIZE       ; 20       ; Signed Integer                                    ;
+; X_MAX             ; 639      ; Signed Integer                                    ;
+; Y_MAX             ; 479      ; Signed Integer                                    ;
+; CIRCLE_RGB        ; 11111111 ; Unsigned Binary                                   ;
+; BG_RED            ; 00000000 ; Unsigned Binary                                   ;
+; BG_GREEN          ; 00000000 ; Unsigned Binary                                   ;
+; BG_BLUE           ; 00000000 ; Unsigned Binary                                   ;
+; CIRCLE_RADIUS     ; 6        ; Signed Integer                                    ;
+; CIRCLE_VELOCITY   ; 1        ; Signed Integer                                    ;
+; TICK_DIVIDER_SLOW ; 20       ; Signed Integer                                    ;
+; TICK_DIVIDER_FAST ; 3        ; Signed Integer                                    ;
++-------------------+----------+---------------------------------------------------+
+Note: In order to hide this table in the UI and the text report file, please set the "Show Parameter Settings in Synthesis Report" option in "Analysis and Synthesis Settings -> More Settings" to "Off".
+
+
++----------------------------------------------------------------------------------------------+
+; Parameter Settings for Inferred Entity Instance: top:a|seven_segment:display|lpm_divide:Mod0 ;
++------------------------+----------------+----------------------------------------------------+
+; Parameter Name         ; Value          ; Type                                               ;
++------------------------+----------------+----------------------------------------------------+
+; LPM_WIDTHN             ; 9              ; Untyped                                            ;
+; LPM_WIDTHD             ; 4              ; Untyped                                            ;
+; LPM_NREPRESENTATION    ; UNSIGNED       ; Untyped                                            ;
+; LPM_DREPRESENTATION    ; UNSIGNED       ; Untyped                                            ;
+; LPM_PIPELINE           ; 0              ; Untyped                                            ;
+; LPM_REMAINDERPOSITIVE  ; TRUE           ; Untyped                                            ;
+; MAXIMIZE_SPEED         ; 5              ; Untyped                                            ;
+; CBXI_PARAMETER         ; lpm_divide_92m ; Untyped                                            ;
+; CARRY_CHAIN            ; MANUAL         ; Untyped                                            ;
+; OPTIMIZE_FOR_SPEED     ; 5              ; Untyped                                            ;
+; AUTO_CARRY_CHAINS      ; ON             ; AUTO_CARRY                                         ;
+; IGNORE_CARRY_BUFFERS   ; OFF            ; IGNORE_CARRY                                       ;
+; AUTO_CASCADE_CHAINS    ; ON             ; AUTO_CASCADE                                       ;
+; IGNORE_CASCADE_BUFFERS ; OFF            ; IGNORE_CASCADE                                     ;
++------------------------+----------------+----------------------------------------------------+
+Note: In order to hide this table in the UI and the text report file, please set the "Show Parameter Settings in Synthesis Report" option in "Analysis and Synthesis Settings -> More Settings" to "Off".
+
+
++----------------------------------------------------------------------------------------------+
+; Parameter Settings for Inferred Entity Instance: top:a|seven_segment:display|lpm_divide:Div0 ;
++------------------------+----------------+----------------------------------------------------+
+; Parameter Name         ; Value          ; Type                                               ;
++------------------------+----------------+----------------------------------------------------+
+; LPM_WIDTHN             ; 9              ; Untyped                                            ;
+; LPM_WIDTHD             ; 4              ; Untyped                                            ;
+; LPM_NREPRESENTATION    ; UNSIGNED       ; Untyped                                            ;
+; LPM_DREPRESENTATION    ; UNSIGNED       ; Untyped                                            ;
+; LPM_PIPELINE           ; 0              ; Untyped                                            ;
+; LPM_REMAINDERPOSITIVE  ; TRUE           ; Untyped                                            ;
+; MAXIMIZE_SPEED         ; 5              ; Untyped                                            ;
+; CBXI_PARAMETER         ; lpm_divide_6am ; Untyped                                            ;
+; CARRY_CHAIN            ; MANUAL         ; Untyped                                            ;
+; OPTIMIZE_FOR_SPEED     ; 5              ; Untyped                                            ;
+; AUTO_CARRY_CHAINS      ; ON             ; AUTO_CARRY                                         ;
+; IGNORE_CARRY_BUFFERS   ; OFF            ; IGNORE_CARRY                                       ;
+; AUTO_CASCADE_CHAINS    ; ON             ; AUTO_CASCADE                                       ;
+; IGNORE_CASCADE_BUFFERS ; OFF            ; IGNORE_CASCADE                                     ;
++------------------------+----------------+----------------------------------------------------+
+Note: In order to hide this table in the UI and the text report file, please set the "Show Parameter Settings in Synthesis Report" option in "Analysis and Synthesis Settings -> More Settings" to "Off".
+
+
++----------------------------------------------------------------------------------------------+
+; Parameter Settings for Inferred Entity Instance: top:a|seven_segment:display|lpm_divide:Mod1 ;
++------------------------+----------------+----------------------------------------------------+
+; Parameter Name         ; Value          ; Type                                               ;
++------------------------+----------------+----------------------------------------------------+
+; LPM_WIDTHN             ; 9              ; Untyped                                            ;
+; LPM_WIDTHD             ; 4              ; Untyped                                            ;
+; LPM_NREPRESENTATION    ; UNSIGNED       ; Untyped                                            ;
+; LPM_DREPRESENTATION    ; UNSIGNED       ; Untyped                                            ;
+; LPM_PIPELINE           ; 0              ; Untyped                                            ;
+; LPM_REMAINDERPOSITIVE  ; TRUE           ; Untyped                                            ;
+; MAXIMIZE_SPEED         ; 5              ; Untyped                                            ;
+; CBXI_PARAMETER         ; lpm_divide_92m ; Untyped                                            ;
+; CARRY_CHAIN            ; MANUAL         ; Untyped                                            ;
+; OPTIMIZE_FOR_SPEED     ; 5              ; Untyped                                            ;
+; AUTO_CARRY_CHAINS      ; ON             ; AUTO_CARRY                                         ;
+; IGNORE_CARRY_BUFFERS   ; OFF            ; IGNORE_CARRY                                       ;
+; AUTO_CASCADE_CHAINS    ; ON             ; AUTO_CASCADE                                       ;
+; IGNORE_CASCADE_BUFFERS ; OFF            ; IGNORE_CASCADE                                     ;
++------------------------+----------------+----------------------------------------------------+
+Note: In order to hide this table in the UI and the text report file, please set the "Show Parameter Settings in Synthesis Report" option in "Analysis and Synthesis Settings -> More Settings" to "Off".
+
+
++----------------------------------------------------------------------------------------------+
+; Parameter Settings for Inferred Entity Instance: top:a|seven_segment:display|lpm_divide:Div1 ;
++------------------------+----------------+----------------------------------------------------+
+; Parameter Name         ; Value          ; Type                                               ;
++------------------------+----------------+----------------------------------------------------+
+; LPM_WIDTHN             ; 9              ; Untyped                                            ;
+; LPM_WIDTHD             ; 7              ; Untyped                                            ;
+; LPM_NREPRESENTATION    ; UNSIGNED       ; Untyped                                            ;
+; LPM_DREPRESENTATION    ; UNSIGNED       ; Untyped                                            ;
+; LPM_PIPELINE           ; 0              ; Untyped                                            ;
+; LPM_REMAINDERPOSITIVE  ; TRUE           ; Untyped                                            ;
+; MAXIMIZE_SPEED         ; 5              ; Untyped                                            ;
+; CBXI_PARAMETER         ; lpm_divide_9am ; Untyped                                            ;
+; CARRY_CHAIN            ; MANUAL         ; Untyped                                            ;
+; OPTIMIZE_FOR_SPEED     ; 5              ; Untyped                                            ;
+; AUTO_CARRY_CHAINS      ; ON             ; AUTO_CARRY                                         ;
+; IGNORE_CARRY_BUFFERS   ; OFF            ; IGNORE_CARRY                                       ;
+; AUTO_CASCADE_CHAINS    ; ON             ; AUTO_CASCADE                                       ;
+; IGNORE_CASCADE_BUFFERS ; OFF            ; IGNORE_CASCADE                                     ;
++------------------------+----------------+----------------------------------------------------+
+Note: In order to hide this table in the UI and the text report file, please set the "Show Parameter Settings in Synthesis Report" option in "Analysis and Synthesis Settings -> More Settings" to "Off".
+
+
++----------------------------------------------------------------------------------------------+
+; Parameter Settings for Inferred Entity Instance: top:a|seven_segment:display|lpm_divide:Mod2 ;
++------------------------+----------------+----------------------------------------------------+
+; Parameter Name         ; Value          ; Type                                               ;
++------------------------+----------------+----------------------------------------------------+
+; LPM_WIDTHN             ; 9              ; Untyped                                            ;
+; LPM_WIDTHD             ; 4              ; Untyped                                            ;
+; LPM_NREPRESENTATION    ; UNSIGNED       ; Untyped                                            ;
+; LPM_DREPRESENTATION    ; UNSIGNED       ; Untyped                                            ;
+; LPM_PIPELINE           ; 0              ; Untyped                                            ;
+; LPM_REMAINDERPOSITIVE  ; TRUE           ; Untyped                                            ;
+; MAXIMIZE_SPEED         ; 5              ; Untyped                                            ;
+; CBXI_PARAMETER         ; lpm_divide_92m ; Untyped                                            ;
+; CARRY_CHAIN            ; MANUAL         ; Untyped                                            ;
+; OPTIMIZE_FOR_SPEED     ; 5              ; Untyped                                            ;
+; AUTO_CARRY_CHAINS      ; ON             ; AUTO_CARRY                                         ;
+; IGNORE_CARRY_BUFFERS   ; OFF            ; IGNORE_CARRY                                       ;
+; AUTO_CASCADE_CHAINS    ; ON             ; AUTO_CASCADE                                       ;
+; IGNORE_CASCADE_BUFFERS ; OFF            ; IGNORE_CASCADE                                     ;
++------------------------+----------------+----------------------------------------------------+
+Note: In order to hide this table in the UI and the text report file, please set the "Show Parameter Settings in Synthesis Report" option in "Analysis and Synthesis Settings -> More Settings" to "Off".
+
+
++----------------------------------------------------------------------------------------------+
+; Parameter Settings for Inferred Entity Instance: top:a|seven_segment:display|lpm_divide:Div2 ;
++------------------------+----------------+----------------------------------------------------+
+; Parameter Name         ; Value          ; Type                                               ;
++------------------------+----------------+----------------------------------------------------+
+; LPM_WIDTHN             ; 9              ; Untyped                                            ;
+; LPM_WIDTHD             ; 10             ; Untyped                                            ;
+; LPM_NREPRESENTATION    ; UNSIGNED       ; Untyped                                            ;
+; LPM_DREPRESENTATION    ; UNSIGNED       ; Untyped                                            ;
+; LPM_PIPELINE           ; 0              ; Untyped                                            ;
+; LPM_REMAINDERPOSITIVE  ; TRUE           ; Untyped                                            ;
+; MAXIMIZE_SPEED         ; 5              ; Untyped                                            ;
+; CBXI_PARAMETER         ; lpm_divide_jbm ; Untyped                                            ;
+; CARRY_CHAIN            ; MANUAL         ; Untyped                                            ;
+; OPTIMIZE_FOR_SPEED     ; 5              ; Untyped                                            ;
+; AUTO_CARRY_CHAINS      ; ON             ; AUTO_CARRY                                         ;
+; IGNORE_CARRY_BUFFERS   ; OFF            ; IGNORE_CARRY                                       ;
+; AUTO_CASCADE_CHAINS    ; ON             ; AUTO_CASCADE                                       ;
+; IGNORE_CASCADE_BUFFERS ; OFF            ; IGNORE_CASCADE                                     ;
++------------------------+----------------+----------------------------------------------------+
+Note: In order to hide this table in the UI and the text report file, please set the "Show Parameter Settings in Synthesis Report" option in "Analysis and Synthesis Settings -> More Settings" to "Off".
+
+
++----------------------------------------------------------------------------------------------+
+; Parameter Settings for Inferred Entity Instance: top:a|seven_segment:display|lpm_divide:Mod3 ;
++------------------------+----------------+----------------------------------------------------+
+; Parameter Name         ; Value          ; Type                                               ;
++------------------------+----------------+----------------------------------------------------+
+; LPM_WIDTHN             ; 9              ; Untyped                                            ;
+; LPM_WIDTHD             ; 4              ; Untyped                                            ;
+; LPM_NREPRESENTATION    ; UNSIGNED       ; Untyped                                            ;
+; LPM_DREPRESENTATION    ; UNSIGNED       ; Untyped                                            ;
+; LPM_PIPELINE           ; 0              ; Untyped                                            ;
+; LPM_REMAINDERPOSITIVE  ; TRUE           ; Untyped                                            ;
+; MAXIMIZE_SPEED         ; 5              ; Untyped                                            ;
+; CBXI_PARAMETER         ; lpm_divide_92m ; Untyped                                            ;
+; CARRY_CHAIN            ; MANUAL         ; Untyped                                            ;
+; OPTIMIZE_FOR_SPEED     ; 5              ; Untyped                                            ;
+; AUTO_CARRY_CHAINS      ; ON             ; AUTO_CARRY                                         ;
+; IGNORE_CARRY_BUFFERS   ; OFF            ; IGNORE_CARRY                                       ;
+; AUTO_CASCADE_CHAINS    ; ON             ; AUTO_CASCADE                                       ;
+; IGNORE_CASCADE_BUFFERS ; OFF            ; IGNORE_CASCADE                                     ;
++------------------------+----------------+----------------------------------------------------+
+Note: In order to hide this table in the UI and the text report file, please set the "Show Parameter Settings in Synthesis Report" option in "Analysis and Synthesis Settings -> More Settings" to "Off".
+
+
++------------------------------------------------------------------------------------------------------+
+; Parameter Settings for Inferred Entity Instance: top:a|pixel_generation_from_left:pg|lpm_divide:Mod0 ;
++------------------------+----------------+------------------------------------------------------------+
+; Parameter Name         ; Value          ; Type                                                       ;
++------------------------+----------------+------------------------------------------------------------+
+; LPM_WIDTHN             ; 11             ; Untyped                                                    ;
+; LPM_WIDTHD             ; 5              ; Untyped                                                    ;
+; LPM_NREPRESENTATION    ; UNSIGNED       ; Untyped                                                    ;
+; LPM_DREPRESENTATION    ; UNSIGNED       ; Untyped                                                    ;
+; LPM_PIPELINE           ; 0              ; Untyped                                                    ;
+; LPM_REMAINDERPOSITIVE  ; TRUE           ; Untyped                                                    ;
+; MAXIMIZE_SPEED         ; 5              ; Untyped                                                    ;
+; CBXI_PARAMETER         ; lpm_divide_j3m ; Untyped                                                    ;
+; CARRY_CHAIN            ; MANUAL         ; Untyped                                                    ;
+; OPTIMIZE_FOR_SPEED     ; 5              ; Untyped                                                    ;
+; AUTO_CARRY_CHAINS      ; ON             ; AUTO_CARRY                                                 ;
+; IGNORE_CARRY_BUFFERS   ; OFF            ; IGNORE_CARRY                                               ;
+; AUTO_CASCADE_CHAINS    ; ON             ; AUTO_CASCADE                                               ;
+; IGNORE_CASCADE_BUFFERS ; OFF            ; IGNORE_CASCADE                                             ;
++------------------------+----------------+------------------------------------------------------------+
+Note: In order to hide this table in the UI and the text report file, please set the "Show Parameter Settings in Synthesis Report" option in "Analysis and Synthesis Settings -> More Settings" to "Off".
+
+
++------------------------------------------------------------------------------------------------------+
+; Parameter Settings for Inferred Entity Instance: top:a|pixel_generation_from_left:pg|lpm_divide:Mod1 ;
++------------------------+----------------+------------------------------------------------------------+
+; Parameter Name         ; Value          ; Type                                                       ;
++------------------------+----------------+------------------------------------------------------------+
+; LPM_WIDTHN             ; 10             ; Untyped                                                    ;
+; LPM_WIDTHD             ; 5              ; Untyped                                                    ;
+; LPM_NREPRESENTATION    ; UNSIGNED       ; Untyped                                                    ;
+; LPM_DREPRESENTATION    ; UNSIGNED       ; Untyped                                                    ;
+; LPM_PIPELINE           ; 0              ; Untyped                                                    ;
+; LPM_REMAINDERPOSITIVE  ; TRUE           ; Untyped                                                    ;
+; MAXIMIZE_SPEED         ; 5              ; Untyped                                                    ;
+; CBXI_PARAMETER         ; lpm_divide_i3m ; Untyped                                                    ;
+; CARRY_CHAIN            ; MANUAL         ; Untyped                                                    ;
+; OPTIMIZE_FOR_SPEED     ; 5              ; Untyped                                                    ;
+; AUTO_CARRY_CHAINS      ; ON             ; AUTO_CARRY                                                 ;
+; IGNORE_CARRY_BUFFERS   ; OFF            ; IGNORE_CARRY                                               ;
+; AUTO_CASCADE_CHAINS    ; ON             ; AUTO_CASCADE                                               ;
+; IGNORE_CASCADE_BUFFERS ; OFF            ; IGNORE_CASCADE                                             ;
++------------------------+----------------+------------------------------------------------------------+
+Note: In order to hide this table in the UI and the text report file, please set the "Show Parameter Settings in Synthesis Report" option in "Analysis and Synthesis Settings -> More Settings" to "Off".
+
+
++-------------------------------------------------------------------------------------------------------------------------------------+
+; Port Connectivity Checks: "top:a|pixel_generation_from_left:pg"                                                                     ;
++------+--------+----------+----------------------------------------------------------------------------------------------------------+
+; Port ; Type   ; Severity ; Details                                                                                                  ;
++------+--------+----------+----------------------------------------------------------------------------------------------------------+
+; hex0 ; Output ; Warning  ; Declared by entity but not connected by instance. Logic that only feeds a dangling port will be removed. ;
+; hex1 ; Output ; Warning  ; Declared by entity but not connected by instance. Logic that only feeds a dangling port will be removed. ;
+; hex2 ; Output ; Warning  ; Declared by entity but not connected by instance. Logic that only feeds a dangling port will be removed. ;
+; hex3 ; Output ; Warning  ; Declared by entity but not connected by instance. Logic that only feeds a dangling port will be removed. ;
++------+--------+----------+----------------------------------------------------------------------------------------------------------+
+
+
++-------------------------------+
+; Elapsed Time Per Partition    ;
++----------------+--------------+
+; Partition Name ; Elapsed Time ;
++----------------+--------------+
+; Top            ; 00:00:04     ;
++----------------+--------------+
+
+
++-------------------------------+
+; Analysis & Synthesis Messages ;
++-------------------------------+
+Info: *******************************************************************
+Info: Running Quartus II 64-Bit Analysis & Synthesis
+    Info: Version 13.1.0 Build 162 10/23/2013 SJ Web Edition
+    Info: Processing started: Fri Jun 14 07:18:00 2024
+Info: Command: quartus_map --read_settings_files=on --write_settings_files=off movingobjects -c movingobjects
+Warning (20028): Parallel compilation is not licensed and has been disabled
+Info (12021): Found 1 design units, including 1 entities, in source file movingobjects.v
+    Info (12023): Found entity 1: movingobjects
+Warning (10275): Verilog HDL Module Instantiation warning at top.v(96): ignored dangling comma in List of Port Connections
+Info (12021): Found 1 design units, including 1 entities, in source file top.v
+    Info (12023): Found entity 1: top
+Info (12021): Found 1 design units, including 1 entities, in source file lfsr.v
+    Info (12023): Found entity 1: lfsr
+Info (12021): Found 1 design units, including 1 entities, in source file seven_segment.v
+    Info (12023): Found entity 1: seven_segment
+Info (12021): Found 1 design units, including 1 entities, in source file vga_controller.v
+    Info (12023): Found entity 1: vga_controller
+Info (12021): Found 1 design units, including 1 entities, in source file pixel_generation_from_left.v
+    Info (12023): Found entity 1: pixel_generation_from_left
+Info (12021): Found 1 design units, including 1 entities, in source file clock_divider.v
+    Info (12023): Found entity 1: clock_divider
+Warning (10236): Verilog HDL Implicit Net warning at lfsr.v(30): created implicit net for "ShootingIndicator"
+Info (12127): Elaborating entity "movingobjects" for the top level hierarchy
+Warning (10034): Output port "HEX4" at movingobjects.v(19) has no driver
+Warning (10034): Output port "HEX5" at movingobjects.v(20) has no driver
+Warning (10034): Output port "LEDR[9..4]" at movingobjects.v(30) has no driver
+Warning (10034): Output port "IRDA_TXD" at movingobjects.v(24) has no driver
+Info (12128): Elaborating entity "top" for hierarchy "top:a"
+Warning (10230): Verilog HDL assignment warning at top.v(151): truncated value with size 32 to match size of target (10)
+Warning (10230): Verilog HDL assignment warning at top.v(159): truncated value with size 32 to match size of target (10)
+Warning (10230): Verilog HDL assignment warning at top.v(168): truncated value with size 32 to match size of target (1)
+Warning (10230): Verilog HDL assignment warning at top.v(169): truncated value with size 32 to match size of target (1)
+Info (12128): Elaborating entity "vga_controller" for hierarchy "top:a|vga_controller:vc"
+Warning (10230): Verilog HDL assignment warning at vga_controller.v(93): truncated value with size 32 to match size of target (10)
+Warning (10230): Verilog HDL assignment warning at vga_controller.v(104): truncated value with size 32 to match size of target (10)
+Info (12128): Elaborating entity "lfsr" for hierarchy "top:a|lfsr:lfsr_top"
+Warning (10036): Verilog HDL or VHDL warning at lfsr.v(30): object "ShootingIndicator" assigned a value but never read
+Warning (10230): Verilog HDL assignment warning at lfsr.v(30): truncated value with size 32 to match size of target (1)
+Warning (10230): Verilog HDL assignment warning at lfsr.v(47): truncated value with size 32 to match size of target (21)
+Warning (10230): Verilog HDL assignment warning at lfsr.v(51): truncated value with size 32 to match size of target (21)
+Warning (10230): Verilog HDL assignment warning at lfsr.v(55): truncated value with size 32 to match size of target (21)
+Warning (10230): Verilog HDL assignment warning at lfsr.v(59): truncated value with size 32 to match size of target (21)
+Warning (10230): Verilog HDL assignment warning at lfsr.v(63): truncated value with size 32 to match size of target (21)
+Warning (10230): Verilog HDL assignment warning at lfsr.v(67): truncated value with size 32 to match size of target (21)
+Warning (10230): Verilog HDL assignment warning at lfsr.v(71): truncated value with size 32 to match size of target (21)
+Warning (10230): Verilog HDL assignment warning at lfsr.v(75): truncated value with size 32 to match size of target (21)
+Warning (10230): Verilog HDL assignment warning at lfsr.v(79): truncated value with size 21 to match size of target (9)
+Warning (10240): Verilog HDL Always Construct warning at lfsr.v(118): inferring latch(es) for variable "swcontrolalt", which holds its previous value in one or more paths through the always construct
+Warning (10240): Verilog HDL Always Construct warning at lfsr.v(118): inferring latch(es) for variable "swcontrolsag", which holds its previous value in one or more paths through the always construct
+Warning (10240): Verilog HDL Always Construct warning at lfsr.v(118): inferring latch(es) for variable "swcontrolsol", which holds its previous value in one or more paths through the always construct
+Warning (10240): Verilog HDL Always Construct warning at lfsr.v(118): inferring latch(es) for variable "swcontrolust", which holds its previous value in one or more paths through the always construct
+Warning (10240): Verilog HDL Always Construct warning at lfsr.v(118): inferring latch(es) for variable "swcontrolsolust", which holds its previous value in one or more paths through the always construct
+Warning (10240): Verilog HDL Always Construct warning at lfsr.v(118): inferring latch(es) for variable "swcontrolsagust", which holds its previous value in one or more paths through the always construct
+Warning (10240): Verilog HDL Always Construct warning at lfsr.v(118): inferring latch(es) for variable "swcontrolsolalt", which holds its previous value in one or more paths through the always construct
+Warning (10240): Verilog HDL Always Construct warning at lfsr.v(118): inferring latch(es) for variable "swcontrolsagalt", which holds its previous value in one or more paths through the always construct
+Info (10041): Inferred latch for "swcontrolsagalt" at lfsr.v(142)
+Info (10041): Inferred latch for "swcontrolsolalt" at lfsr.v(142)
+Info (10041): Inferred latch for "swcontrolsagust" at lfsr.v(142)
+Info (10041): Inferred latch for "swcontrolsolust" at lfsr.v(142)
+Info (10041): Inferred latch for "swcontrolust" at lfsr.v(142)
+Info (10041): Inferred latch for "swcontrolsol" at lfsr.v(142)
+Info (10041): Inferred latch for "swcontrolsag" at lfsr.v(142)
+Info (10041): Inferred latch for "swcontrolalt" at lfsr.v(142)
+Info (12128): Elaborating entity "clock_divider" for hierarchy "top:a|clock_divider:cd"
+Info (12128): Elaborating entity "pixel_generation_from_left" for hierarchy "top:a|pixel_generation_from_left:pg"
+Warning (10036): Verilog HDL or VHDL warning at pixel_generation_from_left.v(712): object "number_2_bit_2" assigned a value but never read
+Warning (10036): Verilog HDL or VHDL warning at pixel_generation_from_left.v(712): object "number_3_bit_2" assigned a value but never read
+Warning (10036): Verilog HDL or VHDL warning at pixel_generation_from_left.v(712): object "number_4_bit_2" assigned a value but never read
+Warning (10036): Verilog HDL or VHDL warning at pixel_generation_from_left.v(712): object "number_5_bit_2" assigned a value but never read
+Warning (10036): Verilog HDL or VHDL warning at pixel_generation_from_left.v(712): object "number_6_bit_2" assigned a value but never read
+Warning (10036): Verilog HDL or VHDL warning at pixel_generation_from_left.v(712): object "number_7_bit_2" assigned a value but never read
+Warning (10036): Verilog HDL or VHDL warning at pixel_generation_from_left.v(712): object "number_8_bit_2" assigned a value but never read
+Warning (10036): Verilog HDL or VHDL warning at pixel_generation_from_left.v(712): object "number_9_bit_2" assigned a value but never read
+Warning (10036): Verilog HDL or VHDL warning at pixel_generation_from_left.v(713): object "number_1_bit_3" assigned a value but never read
+Warning (10036): Verilog HDL or VHDL warning at pixel_generation_from_left.v(713): object "number_2_bit_3" assigned a value but never read
+Warning (10036): Verilog HDL or VHDL warning at pixel_generation_from_left.v(713): object "number_3_bit_3" assigned a value but never read
+Warning (10036): Verilog HDL or VHDL warning at pixel_generation_from_left.v(713): object "number_4_bit_3" assigned a value but never read
+Warning (10036): Verilog HDL or VHDL warning at pixel_generation_from_left.v(713): object "number_5_bit_3" assigned a value but never read
+Warning (10036): Verilog HDL or VHDL warning at pixel_generation_from_left.v(713): object "number_6_bit_3" assigned a value but never read
+Warning (10036): Verilog HDL or VHDL warning at pixel_generation_from_left.v(713): object "number_7_bit_3" assigned a value but never read
+Warning (10036): Verilog HDL or VHDL warning at pixel_generation_from_left.v(713): object "number_8_bit_3" assigned a value but never read
+Warning (10036): Verilog HDL or VHDL warning at pixel_generation_from_left.v(713): object "number_9_bit_3" assigned a value but never read
+Warning (10230): Verilog HDL assignment warning at pixel_generation_from_left.v(51): truncated value with size 32 to match size of target (1)
+Warning (10230): Verilog HDL assignment warning at pixel_generation_from_left.v(60): truncated value with size 32 to match size of target (5)
+Warning (10230): Verilog HDL assignment warning at pixel_generation_from_left.v(82): truncated value with size 32 to match size of target (4)
+Warning (10230): Verilog HDL assignment warning at pixel_generation_from_left.v(86): truncated value with size 32 to match size of target (4)
+Warning (10230): Verilog HDL assignment warning at pixel_generation_from_left.v(122): truncated value with size 32 to match size of target (1)
+Warning (10235): Verilog HDL Always Construct warning at pixel_generation_from_left.v(124): variable "fail_case" is read inside the Always Construct but isn't in the Always Construct's Event Control
+Warning (10230): Verilog HDL assignment warning at pixel_generation_from_left.v(138): truncated value with size 32 to match size of target (5)
+Warning (10230): Verilog HDL assignment warning at pixel_generation_from_left.v(177): truncated value with size 32 to match size of target (5)
+Warning (10230): Verilog HDL assignment warning at pixel_generation_from_left.v(216): truncated value with size 32 to match size of target (5)
+Warning (10230): Verilog HDL assignment warning at pixel_generation_from_left.v(255): truncated value with size 32 to match size of target (5)
+Warning (10230): Verilog HDL assignment warning at pixel_generation_from_left.v(287): truncated value with size 32 to match size of target (10)
+Warning (10230): Verilog HDL assignment warning at pixel_generation_from_left.v(291): truncated value with size 32 to match size of target (10)
+Warning (10230): Verilog HDL assignment warning at pixel_generation_from_left.v(295): truncated value with size 32 to match size of target (10)
+Warning (10230): Verilog HDL assignment warning at pixel_generation_from_left.v(299): truncated value with size 32 to match size of target (10)
+Warning (10230): Verilog HDL assignment warning at pixel_generation_from_left.v(336): truncated value with size 32 to match size of target (2)
+Warning (10230): Verilog HDL assignment warning at pixel_generation_from_left.v(357): truncated value with size 32 to match size of target (10)
+Warning (10230): Verilog HDL assignment warning at pixel_generation_from_left.v(364): truncated value with size 32 to match size of target (10)
+Warning (10230): Verilog HDL assignment warning at pixel_generation_from_left.v(412): truncated value with size 32 to match size of target (10)
+Warning (10230): Verilog HDL assignment warning at pixel_generation_from_left.v(420): truncated value with size 32 to match size of target (2)
+Warning (10230): Verilog HDL assignment warning at pixel_generation_from_left.v(440): truncated value with size 32 to match size of target (10)
+Warning (10230): Verilog HDL assignment warning at pixel_generation_from_left.v(447): truncated value with size 32 to match size of target (10)
+Warning (10230): Verilog HDL assignment warning at pixel_generation_from_left.v(466): truncated value with size 32 to match size of target (10)
+Warning (10230): Verilog HDL assignment warning at pixel_generation_from_left.v(498): truncated value with size 32 to match size of target (10)
+Warning (10230): Verilog HDL assignment warning at pixel_generation_from_left.v(505): truncated value with size 32 to match size of target (2)
+Warning (10230): Verilog HDL assignment warning at pixel_generation_from_left.v(525): truncated value with size 32 to match size of target (10)
+Warning (10230): Verilog HDL assignment warning at pixel_generation_from_left.v(532): truncated value with size 32 to match size of target (10)
+Warning (10230): Verilog HDL assignment warning at pixel_generation_from_left.v(551): truncated value with size 32 to match size of target (10)
+Warning (10230): Verilog HDL assignment warning at pixel_generation_from_left.v(552): truncated value with size 32 to match size of target (10)
+Warning (10230): Verilog HDL assignment warning at pixel_generation_from_left.v(585): truncated value with size 32 to match size of target (10)
+Warning (10230): Verilog HDL assignment warning at pixel_generation_from_left.v(592): truncated value with size 32 to match size of target (2)
+Warning (10230): Verilog HDL assignment warning at pixel_generation_from_left.v(612): truncated value with size 32 to match size of target (10)
+Warning (10230): Verilog HDL assignment warning at pixel_generation_from_left.v(619): truncated value with size 32 to match size of target (10)
+Warning (10230): Verilog HDL assignment warning at pixel_generation_from_left.v(640): truncated value with size 32 to match size of target (10)
+Warning (10230): Verilog HDL assignment warning at pixel_generation_from_left.v(1511): truncated value with size 32 to match size of target (10)
+Warning (10230): Verilog HDL assignment warning at pixel_generation_from_left.v(1513): truncated value with size 32 to match size of target (25)
+Warning (10030): Net "number_0_bit_0[6..4]" at pixel_generation_from_left.v(710) has no driver or initial value, using a default initial value '0'
+Warning (10030): Net "number_1_bit_0[6..1]" at pixel_generation_from_left.v(710) has no driver or initial value, using a default initial value '0'
+Warning (10030): Net "number_2_bit_0[6..5]" at pixel_generation_from_left.v(710) has no driver or initial value, using a default initial value '0'
+Warning (10030): Net "number_3_bit_0[6..5]" at pixel_generation_from_left.v(710) has no driver or initial value, using a default initial value '0'
+Warning (10030): Net "number_4_bit_0[6..3]" at pixel_generation_from_left.v(710) has no driver or initial value, using a default initial value '0'
+Warning (10030): Net "number_5_bit_0[6..5]" at pixel_generation_from_left.v(710) has no driver or initial value, using a default initial value '0'
+Warning (10030): Net "number_6_bit_0[6]" at pixel_generation_from_left.v(710) has no driver or initial value, using a default initial value '0'
+Warning (10030): Net "number_7_bit_0[6..2]" at pixel_generation_from_left.v(710) has no driver or initial value, using a default initial value '0'
+Warning (10030): Net "number_9_bit_0[6]" at pixel_generation_from_left.v(710) has no driver or initial value, using a default initial value '0'
+Warning (10030): Net "number_0_bit_1[6..4]" at pixel_generation_from_left.v(711) has no driver or initial value, using a default initial value '0'
+Warning (10030): Net "number_1_bit_1[6..1]" at pixel_generation_from_left.v(711) has no driver or initial value, using a default initial value '0'
+Warning (10030): Net "number_2_bit_1[6..5]" at pixel_generation_from_left.v(711) has no driver or initial value, using a default initial value '0'
+Warning (10030): Net "number_3_bit_1[6..5]" at pixel_generation_from_left.v(711) has no driver or initial value, using a default initial value '0'
+Warning (10030): Net "number_4_bit_1[6..3]" at pixel_generation_from_left.v(711) has no driver or initial value, using a default initial value '0'
+Warning (10030): Net "number_5_bit_1[6..5]" at pixel_generation_from_left.v(711) has no driver or initial value, using a default initial value '0'
+Warning (10030): Net "number_6_bit_1[6]" at pixel_generation_from_left.v(711) has no driver or initial value, using a default initial value '0'
+Warning (10030): Net "number_7_bit_1[6..2]" at pixel_generation_from_left.v(711) has no driver or initial value, using a default initial value '0'
+Warning (10030): Net "number_9_bit_1[6]" at pixel_generation_from_left.v(711) has no driver or initial value, using a default initial value '0'
+Warning (10030): Net "number_0_bit_2[6..4]" at pixel_generation_from_left.v(712) has no driver or initial value, using a default initial value '0'
+Warning (10030): Net "number_1_bit_2[6..1]" at pixel_generation_from_left.v(712) has no driver or initial value, using a default initial value '0'
+Warning (10030): Net "number_0_bit_3[6..4]" at pixel_generation_from_left.v(713) has no driver or initial value, using a default initial value '0'
+Warning (10034): Output port "hex0" at pixel_generation_from_left.v(25) has no driver
+Warning (10034): Output port "hex1" at pixel_generation_from_left.v(25) has no driver
+Warning (10034): Output port "hex2" at pixel_generation_from_left.v(25) has no driver
+Warning (10034): Output port "hex3" at pixel_generation_from_left.v(25) has no driver
+Info (12128): Elaborating entity "seven_segment" for hierarchy "top:a|seven_segment:display"
+Warning (10230): Verilog HDL assignment warning at seven_segment.v(7): truncated value with size 32 to match size of target (5)
+Warning (10230): Verilog HDL assignment warning at seven_segment.v(8): truncated value with size 32 to match size of target (5)
+Warning (10230): Verilog HDL assignment warning at seven_segment.v(9): truncated value with size 32 to match size of target (5)
+Warning (10230): Verilog HDL assignment warning at seven_segment.v(10): truncated value with size 32 to match size of target (5)
+Warning (10235): Verilog HDL Always Construct warning at seven_segment.v(16): variable "digit0" is read inside the Always Construct but isn't in the Always Construct's Event Control
+Warning (10235): Verilog HDL Always Construct warning at seven_segment.v(30): variable "digit1" is read inside the Always Construct but isn't in the Always Construct's Event Control
+Warning (10235): Verilog HDL Always Construct warning at seven_segment.v(44): variable "digit2" is read inside the Always Construct but isn't in the Always Construct's Event Control
+Warning (10235): Verilog HDL Always Construct warning at seven_segment.v(58): variable "digit3" is read inside the Always Construct but isn't in the Always Construct's Event Control
+Info (278001): Inferred 9 megafunctions from design logic
+    Info (278004): Inferred divider/modulo megafunction ("lpm_divide") from the following logic: "top:a|seven_segment:display|Mod0"
+    Info (278004): Inferred divider/modulo megafunction ("lpm_divide") from the following logic: "top:a|seven_segment:display|Div0"
+    Info (278004): Inferred divider/modulo megafunction ("lpm_divide") from the following logic: "top:a|seven_segment:display|Mod1"
+    Info (278004): Inferred divider/modulo megafunction ("lpm_divide") from the following logic: "top:a|seven_segment:display|Div1"
+    Info (278004): Inferred divider/modulo megafunction ("lpm_divide") from the following logic: "top:a|seven_segment:display|Mod2"
+    Info (278004): Inferred divider/modulo megafunction ("lpm_divide") from the following logic: "top:a|seven_segment:display|Div2"
+    Info (278004): Inferred divider/modulo megafunction ("lpm_divide") from the following logic: "top:a|seven_segment:display|Mod3"
+    Info (278004): Inferred divider/modulo megafunction ("lpm_divide") from the following logic: "top:a|pixel_generation_from_left:pg|Mod0"
+    Info (278004): Inferred divider/modulo megafunction ("lpm_divide") from the following logic: "top:a|pixel_generation_from_left:pg|Mod1"
+Info (12130): Elaborated megafunction instantiation "top:a|seven_segment:display|lpm_divide:Mod0"
+Info (12133): Instantiated megafunction "top:a|seven_segment:display|lpm_divide:Mod0" with the following parameter:
+    Info (12134): Parameter "LPM_WIDTHN" = "9"
+    Info (12134): Parameter "LPM_WIDTHD" = "4"
+    Info (12134): Parameter "LPM_NREPRESENTATION" = "UNSIGNED"
+    Info (12134): Parameter "LPM_DREPRESENTATION" = "UNSIGNED"
+Info (12021): Found 1 design units, including 1 entities, in source file db/lpm_divide_92m.tdf
+    Info (12023): Found entity 1: lpm_divide_92m
+Info (12021): Found 1 design units, including 1 entities, in source file db/sign_div_unsign_ckh.tdf
+    Info (12023): Found entity 1: sign_div_unsign_ckh
+Info (12021): Found 1 design units, including 1 entities, in source file db/alt_u_div_use.tdf
+    Info (12023): Found entity 1: alt_u_div_use
+Info (12130): Elaborated megafunction instantiation "top:a|seven_segment:display|lpm_divide:Div0"
+Info (12133): Instantiated megafunction "top:a|seven_segment:display|lpm_divide:Div0" with the following parameter:
+    Info (12134): Parameter "LPM_WIDTHN" = "9"
+    Info (12134): Parameter "LPM_WIDTHD" = "4"
+    Info (12134): Parameter "LPM_NREPRESENTATION" = "UNSIGNED"
+    Info (12134): Parameter "LPM_DREPRESENTATION" = "UNSIGNED"
+Info (12021): Found 1 design units, including 1 entities, in source file db/lpm_divide_6am.tdf
+    Info (12023): Found entity 1: lpm_divide_6am
+Info (12130): Elaborated megafunction instantiation "top:a|seven_segment:display|lpm_divide:Div1"
+Info (12133): Instantiated megafunction "top:a|seven_segment:display|lpm_divide:Div1" with the following parameter:
+    Info (12134): Parameter "LPM_WIDTHN" = "9"
+    Info (12134): Parameter "LPM_WIDTHD" = "7"
+    Info (12134): Parameter "LPM_NREPRESENTATION" = "UNSIGNED"
+    Info (12134): Parameter "LPM_DREPRESENTATION" = "UNSIGNED"
+Info (12021): Found 1 design units, including 1 entities, in source file db/lpm_divide_9am.tdf
+    Info (12023): Found entity 1: lpm_divide_9am
+Info (12021): Found 1 design units, including 1 entities, in source file db/sign_div_unsign_fkh.tdf
+    Info (12023): Found entity 1: sign_div_unsign_fkh
+Info (12021): Found 1 design units, including 1 entities, in source file db/alt_u_div_4te.tdf
+    Info (12023): Found entity 1: alt_u_div_4te
+Info (12130): Elaborated megafunction instantiation "top:a|seven_segment:display|lpm_divide:Div2"
+Info (12133): Instantiated megafunction "top:a|seven_segment:display|lpm_divide:Div2" with the following parameter:
+    Info (12134): Parameter "LPM_WIDTHN" = "9"
+    Info (12134): Parameter "LPM_WIDTHD" = "10"
+    Info (12134): Parameter "LPM_NREPRESENTATION" = "UNSIGNED"
+    Info (12134): Parameter "LPM_DREPRESENTATION" = "UNSIGNED"
+Info (12021): Found 1 design units, including 1 entities, in source file db/lpm_divide_jbm.tdf
+    Info (12023): Found entity 1: lpm_divide_jbm
+Info (12021): Found 1 design units, including 1 entities, in source file db/sign_div_unsign_1nh.tdf
+    Info (12023): Found entity 1: sign_div_unsign_1nh
+Info (12021): Found 1 design units, including 1 entities, in source file db/alt_u_div_82f.tdf
+    Info (12023): Found entity 1: alt_u_div_82f
+Info (12130): Elaborated megafunction instantiation "top:a|pixel_generation_from_left:pg|lpm_divide:Mod0"
+Info (12133): Instantiated megafunction "top:a|pixel_generation_from_left:pg|lpm_divide:Mod0" with the following parameter:
+    Info (12134): Parameter "LPM_WIDTHN" = "11"
+    Info (12134): Parameter "LPM_WIDTHD" = "5"
+    Info (12134): Parameter "LPM_NREPRESENTATION" = "UNSIGNED"
+    Info (12134): Parameter "LPM_DREPRESENTATION" = "UNSIGNED"
+Info (12021): Found 1 design units, including 1 entities, in source file db/lpm_divide_j3m.tdf
+    Info (12023): Found entity 1: lpm_divide_j3m
+Info (12021): Found 1 design units, including 1 entities, in source file db/sign_div_unsign_mlh.tdf
+    Info (12023): Found entity 1: sign_div_unsign_mlh
+Info (12021): Found 1 design units, including 1 entities, in source file db/alt_u_div_ive.tdf
+    Info (12023): Found entity 1: alt_u_div_ive
+Info (12130): Elaborated megafunction instantiation "top:a|pixel_generation_from_left:pg|lpm_divide:Mod1"
+Info (12133): Instantiated megafunction "top:a|pixel_generation_from_left:pg|lpm_divide:Mod1" with the following parameter:
+    Info (12134): Parameter "LPM_WIDTHN" = "10"
+    Info (12134): Parameter "LPM_WIDTHD" = "5"
+    Info (12134): Parameter "LPM_NREPRESENTATION" = "UNSIGNED"
+    Info (12134): Parameter "LPM_DREPRESENTATION" = "UNSIGNED"
+Info (12021): Found 1 design units, including 1 entities, in source file db/lpm_divide_i3m.tdf
+    Info (12023): Found entity 1: lpm_divide_i3m
+Info (12021): Found 1 design units, including 1 entities, in source file db/sign_div_unsign_llh.tdf
+    Info (12023): Found entity 1: sign_div_unsign_llh
+Info (12021): Found 1 design units, including 1 entities, in source file db/alt_u_div_gve.tdf
+    Info (12023): Found entity 1: alt_u_div_gve
+Warning (12241): 1 hierarchies have connectivity warnings - see the Connectivity Checks report folder
+Warning (13012): Latch top:a|lfsr:lfsr_top|swcontrolsol has unsafe behavior
+    Warning (13013): Ports D and ENA on the latch are fed by the same signal KEY[3]
+Warning (13012): Latch top:a|lfsr:lfsr_top|swcontrolsag has unsafe behavior
+    Warning (13013): Ports D and ENA on the latch are fed by the same signal SW[9]
+Warning (13012): Latch top:a|lfsr:lfsr_top|swcontrolust has unsafe behavior
+    Warning (13013): Ports D and ENA on the latch are fed by the same signal KEY[3]
+Warning (13012): Latch top:a|lfsr:lfsr_top|swcontrolalt has unsafe behavior
+    Warning (13013): Ports D and ENA on the latch are fed by the same signal KEY[3]
+Warning (13012): Latch top:a|lfsr:lfsr_top|swcontrolsolust has unsafe behavior
+    Warning (13013): Ports D and ENA on the latch are fed by the same signal SW[9]
+Warning (13012): Latch top:a|lfsr:lfsr_top|swcontrolsagust has unsafe behavior
+    Warning (13013): Ports D and ENA on the latch are fed by the same signal SW[9]
+Warning (13012): Latch top:a|lfsr:lfsr_top|swcontrolsagalt has unsafe behavior
+    Warning (13013): Ports D and ENA on the latch are fed by the same signal KEY[3]
+Warning (13012): Latch top:a|lfsr:lfsr_top|swcontrolsolalt has unsafe behavior
+    Warning (13013): Ports D and ENA on the latch are fed by the same signal SW[9]
+Warning (13024): Output pins are stuck at VCC or GND
+    Warning (13410): Pin "HEX3[1]" is stuck at GND
+    Warning (13410): Pin "HEX3[2]" is stuck at GND
+    Warning (13410): Pin "HEX3[6]" is stuck at VCC
+    Warning (13410): Pin "HEX4[0]" is stuck at GND
+    Warning (13410): Pin "HEX4[1]" is stuck at GND
+    Warning (13410): Pin "HEX4[2]" is stuck at GND
+    Warning (13410): Pin "HEX4[3]" is stuck at GND
+    Warning (13410): Pin "HEX4[4]" is stuck at GND
+    Warning (13410): Pin "HEX4[5]" is stuck at GND
+    Warning (13410): Pin "HEX4[6]" is stuck at GND
+    Warning (13410): Pin "HEX5[0]" is stuck at GND
+    Warning (13410): Pin "HEX5[1]" is stuck at GND
+    Warning (13410): Pin "HEX5[2]" is stuck at GND
+    Warning (13410): Pin "HEX5[3]" is stuck at GND
+    Warning (13410): Pin "HEX5[4]" is stuck at GND
+    Warning (13410): Pin "HEX5[5]" is stuck at GND
+    Warning (13410): Pin "HEX5[6]" is stuck at GND
+    Warning (13410): Pin "IRDA_TXD" is stuck at GND
+    Warning (13410): Pin "LEDR[4]" is stuck at GND
+    Warning (13410): Pin "LEDR[5]" is stuck at GND
+    Warning (13410): Pin "LEDR[6]" is stuck at GND
+    Warning (13410): Pin "LEDR[7]" is stuck at GND
+    Warning (13410): Pin "LEDR[8]" is stuck at GND
+    Warning (13410): Pin "LEDR[9]" is stuck at GND
+    Warning (13410): Pin "VGA_SYNC_N" is stuck at GND
+Info (286030): Timing-Driven Synthesis is running
+Info (17049): 96 registers lost all their fanouts during netlist optimizations.
+Info (144001): Generated suppressed messages file C:/Users/Monster/Desktop/en_son_final_gösterim/movingobjects/movingobjects.map.smsg
+Info (16010): Generating hard_block partition "hard_block:auto_generated_inst"
+    Info (16011): Adding 0 node(s), including 0 DDIO, 0 PLL, 0 transceiver and 0 LCELL
+Warning (21074): Design contains 11 input pin(s) that do not drive logic
+    Warning (15610): No output dependent on input pin "CLOCK2_50"
+    Warning (15610): No output dependent on input pin "CLOCK3_50"
+    Warning (15610): No output dependent on input pin "CLOCK4_50"
+    Warning (15610): No output dependent on input pin "IRDA_RXD"
+    Warning (15610): No output dependent on input pin "SW[1]"
+    Warning (15610): No output dependent on input pin "SW[2]"
+    Warning (15610): No output dependent on input pin "SW[3]"
+    Warning (15610): No output dependent on input pin "SW[4]"
+    Warning (15610): No output dependent on input pin "SW[5]"
+    Warning (15610): No output dependent on input pin "SW[6]"
+    Warning (15610): No output dependent on input pin "SW[7]"
+Info (21057): Implemented 2472 device resources after synthesis - the final resource count might be different
+    Info (21058): Implemented 19 input pins
+    Info (21059): Implemented 82 output pins
+    Info (21061): Implemented 2351 logic cells
+    Info (21062): Implemented 20 DSP elements
+Info: Quartus II 64-Bit Analysis & Synthesis was successful. 0 errors, 172 warnings
+    Info: Peak virtual memory: 4706 megabytes
+    Info: Processing ended: Fri Jun 14 07:18:07 2024
+    Info: Elapsed time: 00:00:07
+    Info: Total CPU time (on all processors): 00:00:05
+
+
++------------------------------------------+
+; Analysis & Synthesis Suppressed Messages ;
++------------------------------------------+
+The suppressed messages can be found in C:/Users/Monster/Desktop/en_son_final_gösterim/movingobjects/movingobjects.map.smsg.
+
+

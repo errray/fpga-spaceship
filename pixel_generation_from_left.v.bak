@@ -1,0 +1,684 @@
+`timescale 1ns / 1ps
+
+module pixel_generation_from_left(
+    input swsol,
+    input swsag,
+    input swust,
+    input swalt,
+	 input solust,
+	 input swsagalt,
+	 input swsagust,
+	 input swsolalt,
+    input clk,                              // 50MHz from DE1-SoC
+    input ciguli,                           // system reset
+    input video_on,                         // from VGA controller
+    input [9:0] x, y,                       // from VGA controller
+    output reg [7:0] red,                   // to DAC, to VGA controller
+    output reg [7:0] green,                 // to DAC, to VGA controller
+    output reg [7:0] blue,                  // to DAC, to VGA controller
+    input but1,
+    input but2,
+    output reg [3:0] count
+);
+
+    parameter SQUARE_SIZE = 20;             // square size
+    parameter X_MAX = 639;                  // right border of display area
+    parameter Y_MAX = 479;                  // bottom border of display area
+    parameter CIRCLE_RGB = 8'hFF;           // red & green = yellow for circle
+    parameter BG_RED = 8'h00;               // background red
+    parameter BG_GREEN = 8'h00;             // background green
+    parameter BG_BLUE = 8'h00;              // background blue
+    parameter CIRCLE_RADIUS = 6;            // radius of the circle in pixels
+    parameter CIRCLE_VELOCITY = 1;          // speed of the circle
+    parameter TICK_DIVIDER = 5;             // number of refresh ticks before moving the circle
+
+    localparam CENTER_X = X_MAX / 2;        // center x coordinate
+    localparam CENTER_Y = Y_MAX / 2;        // center y coordinate
+    localparam SQUARE_LEFT = CENTER_X - (SQUARE_SIZE / 2);
+    localparam SQUARE_RIGHT = CENTER_X + (SQUARE_SIZE / 2);
+    localparam SQUARE_TOP = CENTER_Y - (SQUARE_SIZE / 2);
+    localparam SQUARE_BOTTOM = CENTER_Y + (SQUARE_SIZE / 2);
+
+    // create a 60Hz refresh tick at the start of vsync 
+    wire refresh_tick;
+    assign refresh_tick = ((y == 481) && (x == 0)) ? 1 : 0;  // y=481 is in the vertical blanking interval
+
+    reg [4:0] tick_counter0;                 // counter to slow down the movement
+    reg [4:0] tick_counter1; 
+    reg [4:0] tick_counter2;
+    reg [4:0] tick_counter3;
+	 reg [4:0] tick_counter4;
+
+    // circle position
+    reg [9:0] circle_x_reg, circle_y_reg;           // regs to track center position
+    wire [9:0] circle_x_next;                       // buffer wires for next position //soldaki
+
+    reg [9:0] circle_x1_reg, circle_y1_reg;         // regs to track center position
+    wire [9:0] circle_x1_next;                      // buffer wires for next position //sağdaki
+
+    reg [9:0] circle_y2_reg, circle_x2_reg;         // regs to track center position
+    wire [9:0] circle_y2_next;                      // buffer wires for next position //tepedeki
+
+    reg [9:0] circle_y3_reg, circle_x3_reg;         // regs to track center position
+    wire [9:0] circle_y3_next;                      // buffer wires for next position //alttaki
+	 
+	 
+    // taret basi
+    reg [3:0] countup;
+    reg [3:0] countdown;
+
+    always @(posedge but1) begin
+        countup <= countup + 1;
+    end
+
+    always @(posedge but2) begin
+        countdown <= countdown + 1;
+    end
+
+    always @(countup or countdown) begin
+        count <= countup - countdown;
+    end
+
+    reg in_rocket_tip;
+
+    always @(posedge but1 or posedge but2 ) begin
+        case(count)
+            0:    in_rocket_tip = (x >= 320 - 2 && x <= 320 + 2 && y >= 240 - 20 && y < 240);
+            10:   in_rocket_tip = (x - y <= 320 - 240 + 3 && x - y >= 320 - 240 - 3 && x + y <= 320 + 240 + 30 && x + y >= 320 + 240); // sağ alt
+            2:    in_rocket_tip = (x - y <= 320 - 240 + 3 && x - y >= 320 - 240 - 3 && x + y >= 320 + 240 - 30 && x + y <= 320 + 240); // sol üst
+            14:   in_rocket_tip = (x - y <= 320 - 240 + 30 && x - y >= 320 - 240  && x + y >= 320 + 240 - 3 && x + y <= 320 + 240 + 3); // sağ üst
+            6:    in_rocket_tip = (x - y >= 320 - 240 - 30 && x - y <= 320 - 240  && x + y >= 320 + 240 - 3 && x + y <= 320 + 240 + 3); // sol alt
+            4:    in_rocket_tip = (y >= 240 - 2 && y <= 240 + 2 && x >= 320 - 20 & x < 320);
+            8:    in_rocket_tip = (x >= 320 - 2 && x <= 320 + 2 && y <= 240 + 20 && y > 240);
+            12:   in_rocket_tip = (y >= 240 - 2 && y <= 240 + 2 && x <= 320 + 20 && x > 320);
+            15:   in_rocket_tip = (x - 2 * y <= 320 - 2 * 240 + 50 && x - 2 * y >= 320 - 2 * 240  && 2 * x + y >= 2 * 320 + 240 - 5 && 2 * x + y <= 2 * 320 + 240 + 5);  // 22.5
+            13:   in_rocket_tip = (x + 2 * y >= 320 + 2 * 240 - 5 && x + 2 * y <= 320 + 2 * 240 + 5  && 2 * x - y >= 2 * 320 - 240  && 2 * x - y <= 2 * 320 - 240 + 50);
+            11:   in_rocket_tip = (x - 2 * y >= 320 - 2 * 240 - 5 && x - 2 * y <= 320 - 2 * 240 + 5  && 2 * x + y >= 2 * 320 + 240 && 2 * x + y <= 2 * 320 + 240 + 50);  // 112.5
+            9:    in_rocket_tip = (2 * x - y >= 2 * 320 - 240 - 5 && 2 * x - y <= 2 * 320 - 240 + 5  && x + 2 * y >= 320 + 2 * 240 && x + 2 * y <= 320 + 2 * 240 + 50);  // 157.5
+            7:    in_rocket_tip = (x - 2 * y >= 320 - 2 * 240 - 50 && x - 2 * y <= 320 - 2 * 240  && 2 * x + y >= 2 * 320 + 240 - 5 && 2 * x + y <= 2 * 320 + 240 + 5);  // 202.5
+            5:    in_rocket_tip = (x + 2 * y >= 320 + 2 * 240 - 5 && x + 2 * y <= 320 + 2 * 240 + 5  && 2 * x - y >= 2 * 320 - 240 - 50 && 2 * x - y <= 2 * 320 - 240);
+            3:    in_rocket_tip = (x - 2 * y >= 320 - 2 * 240 - 5 && x - 2 * y <= 320 - 2 * 240 + 5  && 2 * x + y >= 2 * 320 + 240 - 50 && 2 * x + y <= 2 * 320 + 240);  // 292.5
+            1:    in_rocket_tip = (2 * x - y >= 2 * 320 - 240 - 5 && 2 * x - y <= 2 * 320 - 240 + 5  && x + 2 * y >= 320 + 2 * 240 - 50 && x + 2 * y <= 320 + 2 * 240);  // -22.5
+        endcase
+    end
+
+    wire rocket_body;
+    assign rocket_body = ((x - 320) * (x - 320) + (y - 240) * (y - 240)) <= 100;
+
+	  // Register control for sagustgelen
+   
+
+	 	
+    //sagustgelenson
+
+    // Register control for soldangelen
+    always @(posedge clk or posedge ciguli) begin
+        if (ciguli) begin
+            circle_x_reg <= 0;  // Initial x position set to 0
+            circle_y_reg <= 240;  // Initial y position set to 240 so that we test if object goes in x direction 
+            tick_counter0 <= 0;
+        end else if (swsol) begin
+            if (refresh_tick) begin
+                if (tick_counter0 < TICK_DIVIDER - 1)
+                    tick_counter0 <= tick_counter0 + 1;
+                else begin
+                    tick_counter0 <= 0;
+                    circle_x_reg <= circle_x_next;  // Update circle position
+                end
+            end
+        end else begin
+            circle_x_reg <= 0;  // Initial x position set to 0
+            circle_y_reg <= 240;  // Initial y position set to 240 so that we test if object goes in x direction 
+            tick_counter0 <= 0;
+        end
+    end
+
+    // circle status signal
+    reg circle_on;
+    always @(*) begin
+        if (swsol == 1) begin
+            if (ciguli) begin
+                circle_on = 1;  // Initialize circle_on to 1
+            end else if (SQUARE_LEFT - circle_x_reg <= 10) begin
+                circle_on = 0;  // Stop the circle when it reaches close to the square's left boundary
+            end else begin 
+                circle_on = 1; 
+            end
+        end else begin
+            circle_on = 0;  // Stop the circle when it reaches close to the square's left boundary
+        end
+    end
+    //soldangelenson
+
+    // Register control for sagdangelen
+    always @(posedge clk or posedge ciguli) begin
+        if (ciguli) begin
+            circle_x1_reg <= 640;  // Initial x position set to 640
+            circle_y1_reg <= 240;  // Initial y position set to 240 so that we test if object goes in x direction 
+            tick_counter1 <= 0;
+        end else if (swsag) begin
+            if (refresh_tick) begin
+                if (tick_counter1 < TICK_DIVIDER - 1) begin
+                    tick_counter1 <= tick_counter1 + 1;
+                end else begin
+                    tick_counter1 <= 0;
+                    circle_x1_reg <= circle_x1_next;  // Update circle position
+                end
+            end
+        end else begin
+            circle_x1_reg <= 640;  // Initial x position set to 640
+            circle_y1_reg <= 240;  // Initial y position set to 240 so that we test if object goes in x direction 
+            tick_counter1 <= 0;
+        end
+    end
+
+    // circle status signal
+    reg circle1_on;
+    always @(*) begin
+        if (swsag == 1) begin
+            if (ciguli) begin
+                circle1_on = 1;  // Initialize circle_on to 1
+            end else if (SQUARE_RIGHT - circle_x1_reg <= 10) begin
+                circle1_on = 0;  // Stop the circle when it reaches close to the square's right boundary
+            end else begin 
+                circle1_on = 1; 
+            end
+        end else begin
+            circle1_on = 0;  // Stop the circle when it reaches close to the square's right boundary
+        end
+    end
+    //sagdangelenson
+
+    // Register control for tepedengelen
+    always @(posedge clk or posedge ciguli) begin
+        if (ciguli) begin
+            circle_y2_reg <= 0;  
+            circle_x2_reg <= 320; 
+            tick_counter2 <= 0;
+        end else if (swust) begin
+            if (refresh_tick) begin
+                if (tick_counter2 < TICK_DIVIDER - 1) begin
+                    tick_counter2 <= tick_counter2 + 1;
+                end else begin
+                    tick_counter2 <= 0;
+                    circle_y2_reg <= circle_y2_next;  // Update circle position
+                end
+            end
+        end else begin
+            circle_y2_reg <= 0;  // Initial y position set to 0
+            circle_x2_reg <= 320;  // Initial x position set to 320 so that we test if object goes in y direction 
+            tick_counter2 <= 0;
+        end
+    end
+
+    // circle status signal
+    reg circle2_on;
+    always @(*) begin
+        if (swust == 1) begin
+            if (ciguli) begin
+                circle2_on = 1;  // Initialize circle_on to 1
+            end else if (SQUARE_TOP - circle_y2_reg <= 10) begin
+                circle2_on = 0;  // Stop the circle when it reaches close to the square's top boundary
+            end else begin 
+                circle2_on = 1; 
+            end
+        end else begin
+            circle2_on = 0;  // Stop the circle when it reaches close to the square's top boundary
+        end
+    end
+    //tepedengelenson
+
+    // Register control for alttangelen
+    always @(posedge clk or posedge ciguli) begin
+        if (ciguli) begin
+            circle_y3_reg <= 480;  
+            circle_x3_reg <= 320; 
+            tick_counter3 <= 0;
+        end else if (swalt) begin
+            if (refresh_tick) begin
+                if (tick_counter3 < TICK_DIVIDER - 1) begin
+                    tick_counter3 <= tick_counter3 + 1;
+                end else begin
+                    tick_counter3 <= 0;
+                    circle_y3_reg <= circle_y3_next;  // Update circle position
+                end
+            end
+        end else begin
+            circle_y3_reg <= 480;  // Initial y position set to 480
+            circle_x3_reg <= 320;  // Initial x position set to 320 so that we test if object goes in y direction 
+            tick_counter3 <= 0;
+        end
+    end
+
+    // circle status signal
+    reg circle3_on;
+    always @(*) begin
+        if (swalt == 1) begin
+            if (ciguli) begin
+                circle3_on = 1;  // Initialize circle_on to 1
+            end else if (SQUARE_BOTTOM - circle_y3_reg <= 10) begin
+                circle3_on = 0;  // Stop the circle when it reaches close to the square's bottom boundary
+            end else begin 
+                circle3_on = 1; 
+            end
+        end else begin
+            circle3_on = 0;  // Stop the circle when it reaches close to the square's bottom boundary
+        end
+    end
+    //alltangelenson
+
+    // object direction and velocity 
+    wire [9:0] x_step;
+    assign x_step = circle_on ? CIRCLE_VELOCITY : 0;  // Changed to consider circle_on
+    assign circle_x_next = circle_x_reg + x_step;     // Changed to use x_step
+
+    wire [9:0] x1_step;
+    assign x1_step = circle1_on ? CIRCLE_VELOCITY : 0;  
+    assign circle_x1_next = circle_x1_reg - x1_step;     
+
+    wire [9:0] y2_step;
+    assign y2_step = circle2_on ? CIRCLE_VELOCITY : 0;  
+    assign circle_y2_next = circle_y2_reg + y2_step; 
+
+    wire [9:0] y3_step;
+    assign y3_step = circle3_on ? CIRCLE_VELOCITY : 0;  
+    assign circle_y3_next = circle_y3_reg - y3_step;   
+		 
+
+
+
+
+localparam SLOW_DIV = 2;  // Slow down factor
+localparam PLUS_WIDTH = 10; // Width of the plus sign
+
+// Plus sign position (center position)
+reg [9:0] plus_x4_reg, plus_y4_reg;           // regs to track center position
+reg [9:0] plus_x4_next, plus_y4_next;         // buffer regs
+
+reg [9:0] x4_delta_reg, y4_delta_reg;     // track plus sign speed
+reg [9:0] x4_delta_next, y4_delta_next;   // buffer regs    
+
+// Slower tick generation
+reg [1:0] slow_counter;
+wire slow_tick;
+
+// Plus sign status signal
+reg plus4_on;
+
+// Register control
+always @(posedge clk or posedge ciguli)
+    if (ciguli) begin
+        plus_x4_reg <= 80;
+        plus_y4_reg <= 0;
+        x4_delta_reg <= 80;
+        y4_delta_reg <= 0;
+        slow_counter <= 0;
+    end
+    else begin
+        if (slow_counter == SLOW_DIV - 1) begin
+            slow_counter <= 0;
+        end else begin
+            slow_counter <= slow_counter + 1;
+        end
+        if (slow_tick) begin
+            plus_x4_reg <= plus_x4_next;
+            plus_y4_reg <= plus_y4_next;
+            x4_delta_reg <= x4_delta_next;
+            y4_delta_reg <= y4_delta_next;
+        end
+    end
+
+assign slow_tick = (slow_counter == SLOW_DIV - 1);
+
+// New plus sign velocity and status signal
+always @* begin
+    if (solust == 1) begin
+        x4_delta_next = x4_delta_reg;
+        y4_delta_next = y4_delta_reg;
+
+        if (plus_x4_reg < CENTER_X)
+            x4_delta_next = 1;   // move right towards center
+        else if (plus_x4_reg > CENTER_X)
+            x4_delta_next = -1;  // move left towards center
+        else
+            x4_delta_next = 0;   // stop moving in x direction if at center
+
+        if (plus_y4_reg < CENTER_Y)
+            y4_delta_next = 1;   // move down towards center
+        else if (plus_y4_reg > CENTER_Y)
+            y4_delta_next = -1;  // move up towards center
+        else
+            y4_delta_next = 0;   // stop moving in y direction if at center
+
+        plus4_on = ((x >= (plus_x4_reg - PLUS_WIDTH) && x <= (plus_x4_reg + PLUS_WIDTH) && y == plus_y4_reg) ||
+                    (y >= (plus_y4_reg - PLUS_WIDTH) && y <= (plus_y4_reg + PLUS_WIDTH) && x == plus_x4_reg)) &&
+                    !(plus_x4_reg == CENTER_X && plus_y4_reg == CENTER_Y);
+
+        // Update plus sign position
+        if (refresh_tick && slow_tick && !(plus_x4_reg == CENTER_X && plus_y4_reg == CENTER_Y)) begin
+            plus_x4_next = plus_x4_reg + x4_delta_reg;
+            plus_y4_next = plus_y4_reg + y4_delta_reg;
+        end else begin
+            plus_x4_next = plus_x4_reg;
+            plus_y4_next = plus_y4_reg;
+        end
+    end else begin
+        plus4_on = 0;  // Set plus4_on to 0 when solust is not 1
+        // Reset to initial conditions
+        x4_delta_next = 80;
+        y4_delta_next = 0;
+        plus_x4_next = 80;
+        plus_y4_next = 0;
+    end
+end
+// sagust 
+localparam SLOW_DIV_1 = 2;  // Slow down factor
+localparam PLUS_WIDTH_1 = 10; // Width of the plus sign
+
+// Plus sign position (center position)
+reg [9:0] plus_x5_reg, plus_y5_reg;           // regs to track center position
+reg [9:0] plus_x5_next, plus_y5_next;         // buffer regs
+
+reg [9:0] x5_delta_reg, y5_delta_reg;     // track plus sign speed
+reg [9:0] x5_delta_next, y5_delta_next;   // buffer regs    
+
+// Slower tick generation
+reg [1:0] slow_counter_1;
+wire slow_tick_1;
+
+// Plus sign status signal
+reg plus5_on;
+
+// Register control
+always @(posedge clk or posedge ciguli)
+    if (ciguli) begin
+        plus_x5_reg <= 560;
+        plus_y5_reg <= 0;
+        x5_delta_reg <= -80;
+        y5_delta_reg <= 0;
+        slow_counter_1 <= 0;
+    end
+    else begin
+        if (slow_counter_1 == SLOW_DIV_1 - 1) begin
+            slow_counter_1 <= 0;
+        end else begin
+            slow_counter_1 <= slow_counter_1 + 1;
+        end
+        if (slow_tick_1) begin
+            plus_x5_reg <= plus_x5_next;
+            plus_y5_reg <= plus_y5_next;
+            x5_delta_reg <= x5_delta_next;
+            y5_delta_reg <= y5_delta_next;
+        end
+    end
+
+assign slow_tick_1 = (slow_counter_1 == SLOW_DIV_1 - 1);
+ // New plus sign velocity and status signal
+always @* begin
+    if (swsagust == 1) begin
+        x5_delta_next = x5_delta_reg;
+        y5_delta_next = y5_delta_reg;
+
+        if (plus_x5_reg < CENTER_X)
+            x5_delta_next = 1;   // move right towards center
+        else if (plus_x5_reg > CENTER_X)
+            x5_delta_next = -1;  // move left towards center
+        else
+            x5_delta_next = 0;   // stop moving in x direction if at center
+
+        if (plus_y5_reg < CENTER_Y)
+            y5_delta_next = 1;   // move down towards center
+        else if (plus_y5_reg > CENTER_Y)
+            y5_delta_next = -1;  // move up towards center
+        else
+            y5_delta_next = 0;   // stop moving in y direction if at center
+
+        plus5_on = ((x >= (plus_x5_reg - PLUS_WIDTH) && x <= (plus_x5_reg + PLUS_WIDTH) && y == plus_y5_reg) ||
+                    (y >= (plus_y5_reg - PLUS_WIDTH) && y <= (plus_y5_reg + PLUS_WIDTH) && x == plus_x5_reg)) &&
+                    !(plus_x5_reg == CENTER_X && plus_y5_reg == CENTER_Y);
+
+        // Update plus sign position
+        if (refresh_tick && slow_tick_1 && !(plus_x5_reg == CENTER_X && plus_y5_reg == CENTER_Y)) begin
+            plus_x5_next = plus_x5_reg + x5_delta_reg;
+            plus_y5_next = plus_y5_reg + y5_delta_reg;
+        end else begin
+            plus_x5_next = plus_x5_reg;
+            plus_y5_next = plus_y5_reg;
+        end
+    end else begin
+        plus5_on = 0;  // Set plus4_on to 0 when solust is not 1
+        // Reset to initial conditions
+        x5_delta_next = -1;
+        y5_delta_next = 1;
+        plus_x5_next = 560;
+        plus_y5_next = 0;
+    end
+end
+
+//sagalt
+localparam SLOW_DIV_2 = 2;  // Slow down factor
+localparam PLUS_WIDTH_2 = 10; // Width of the plus sign
+
+// Plus sign position (center position)
+reg [9:0] plus_x6_reg, plus_y6_reg;           // regs to track center position
+reg [9:0] plus_x6_next, plus_y6_next;         // buffer regs
+
+reg [9:0] x6_delta_reg, y6_delta_reg;     // track plus sign speed
+reg [9:0] x6_delta_next, y6_delta_next;   // buffer regs    
+
+// Slower tick generation
+reg [1:0] slow_counter_2;
+wire slow_tick_2;
+
+// Plus sign status signal
+reg plus6_on;
+
+// Register control
+always @(posedge clk or posedge ciguli)
+    if (ciguli) begin
+        plus_x6_reg <= 560;
+        plus_y6_reg <= 480;
+        x6_delta_reg <= 0;
+        y6_delta_reg <= -40;
+        slow_counter_2 <= 0;
+    end
+    else begin
+        if (slow_counter_2 == SLOW_DIV_2 - 1) begin
+            slow_counter_2 <= 0;
+        end else begin
+            slow_counter_2 <= slow_counter_2 + 1;
+        end
+        if (slow_tick_2) begin
+            plus_x6_reg <= plus_x6_next;
+            plus_y6_reg <= plus_y6_next;
+            x6_delta_reg <= x6_delta_next;
+            y6_delta_reg <= y6_delta_next;
+        end
+    end
+
+assign slow_tick_2 = (slow_counter_2 == SLOW_DIV_2 - 1);
+ // New plus sign velocity and status signal
+always @* begin
+    if (swsagalt == 1) begin
+        x6_delta_next = x6_delta_reg;
+        y6_delta_next = y6_delta_reg;
+
+        if (plus_x6_reg < CENTER_X)
+            x6_delta_next = 1;   // move right towards center
+        else if (plus_x6_reg > CENTER_X)
+            x6_delta_next = -1;  // move left towards center
+        else
+            x6_delta_next = 0;   // stop moving in x direction if at center
+
+        if (plus_y6_reg < CENTER_Y)
+            y6_delta_next = 1;   // move down towards center
+        else if (plus_y6_reg > CENTER_Y)
+            y6_delta_next = -1;  // move up towards center
+        else
+            y6_delta_next = 0;   // stop moving in y direction if at center
+
+        plus6_on = ((x >= (plus_x6_reg - PLUS_WIDTH) && x <= (plus_x6_reg + PLUS_WIDTH) && y == plus_y6_reg) ||
+                    (y >= (plus_y6_reg - PLUS_WIDTH) && y <= (plus_y6_reg + PLUS_WIDTH) && x == plus_x6_reg)) &&
+                    !(plus_x6_reg == CENTER_X && plus_y6_reg == CENTER_Y);
+
+        // Update plus sign position
+        if (refresh_tick && slow_tick_2 && !(plus_x6_reg == CENTER_X && plus_y6_reg == CENTER_Y)) begin
+            plus_x6_next = plus_x6_reg + x6_delta_reg;
+            plus_y6_next = plus_y6_reg + y6_delta_reg;
+        end else begin
+            plus_x6_next = plus_x6_reg;
+            plus_y6_next = plus_y6_reg;
+        end
+    end else begin
+        plus6_on = 0;  // Set plus4_on to 0 when solust is not 1
+        // Reset to initial conditions
+        x6_delta_next = -1;
+        y6_delta_next = -1;
+        plus_x6_next = 560;
+        plus_y6_next = 480;
+    end
+end
+
+//sagaltson
+
+//solalt
+
+localparam SLOW_DIV_3 = 2;  // Slow down factor
+localparam PLUS_WIDTH_3 = 10; // Width of the plus sign
+
+// Plus sign position (center position)
+reg [9:0] plus_x7_reg, plus_y7_reg;           // regs to track center position
+reg [9:0] plus_x7_next, plus_y7_next;         // buffer regs
+
+reg [9:0] x7_delta_reg, y7_delta_reg;     // track plus sign speed
+reg [9:0] x7_delta_next, y7_delta_next;   // buffer regs    
+
+// Slower tick generation
+reg [1:0] slow_counter_3;
+wire slow_tick_3;
+
+// Plus sign status signal
+reg plus7_on;
+
+// Register control
+always @(posedge clk or posedge ciguli)
+    if (ciguli) begin
+        plus_x7_reg <= 80;
+        plus_y7_reg <= 480;
+        x7_delta_reg <= 0;
+        y7_delta_reg <= -40;
+        slow_counter_3 <= 0;
+    end
+    else begin
+        if (slow_counter_3 == SLOW_DIV_3 - 1) begin
+            slow_counter_3 <= 0;
+        end else begin
+            slow_counter_3 <= slow_counter_3 + 1;
+        end
+        if (slow_tick_3) begin
+            plus_x7_reg <= plus_x7_next;
+            plus_y7_reg <= plus_y7_next;
+            x7_delta_reg <= x7_delta_next;
+            y7_delta_reg <= y7_delta_next;
+        end
+    end
+
+assign slow_tick_3 = (slow_counter_3 == SLOW_DIV_3 - 1);
+ // New plus sign velocity and status signal
+always @* begin
+    if (swsolalt == 1) begin
+        x7_delta_next = x7_delta_reg;
+        y7_delta_next = y7_delta_reg;
+
+        if (plus_x7_reg < CENTER_X)
+            x7_delta_next = 1;   // move right towards center
+        else if (plus_x7_reg > CENTER_X)
+            x7_delta_next = -1;  // move left towards center
+        else
+            x7_delta_next = 0;   // stop moving in x direction if at center
+
+        if (plus_y7_reg < CENTER_Y)
+            y7_delta_next = 1;   // move down towards center
+        else if (plus_y7_reg > CENTER_Y)
+            y7_delta_next = -1;  // move up towards center
+        else
+            y7_delta_next = 0;   // stop moving in y direction if at center
+
+        plus7_on = ((x >= (plus_x7_reg - PLUS_WIDTH) && x <= (plus_x7_reg + PLUS_WIDTH) && y == plus_y7_reg) ||
+                    (y >= (plus_y7_reg - PLUS_WIDTH) && y <= (plus_y7_reg + PLUS_WIDTH) && x == plus_x7_reg)) &&
+                    !(plus_x7_reg == CENTER_X && plus_y7_reg == CENTER_Y);
+
+        // Update plus sign position
+        if (refresh_tick && slow_tick_3 && !(plus_x7_reg == CENTER_X && plus_y7_reg == CENTER_Y)) begin
+            plus_x7_next = plus_x7_reg + x7_delta_reg;
+            plus_y7_next = plus_y7_reg + y7_delta_reg;
+        end else begin
+            plus_x7_next = plus_x7_reg;
+            plus_y7_next = plus_y7_reg;
+        end
+    end else begin
+        plus7_on = 0;  // Set plus4_on to 0 when solust is not 1
+        // Reset to initial conditions
+        x7_delta_next = 1;
+        y7_delta_next = -1;
+        plus_x7_next = 80;
+        plus_y7_next = 480;
+    end
+end
+
+
+//solaltson
+
+    // RGB control
+    always @(*) begin
+        if(~video_on) begin
+            red = 8'h00;          // black (no value) outside display area
+            green = 8'h00;
+            blue = 8'h00;
+        end else if(circle_on && ((x - circle_x_reg) * (x - circle_x_reg) + (y - circle_y_reg) * (y - circle_y_reg)) <= (CIRCLE_RADIUS * CIRCLE_RADIUS)) begin
+            red = CIRCLE_RGB;     // yellow circle (red + green)
+            green = CIRCLE_RGB;
+            blue = 8'h00;
+        end else if(circle1_on && ((x - circle_x1_reg) * (x - circle_x1_reg) + (y - circle_y1_reg) * (y - circle_y1_reg)) <= (CIRCLE_RADIUS * CIRCLE_RADIUS)) begin
+            red = CIRCLE_RGB;     // yellow circle (red + green)
+            green = CIRCLE_RGB;
+            blue = 8'h00;
+        end else if(circle2_on && ((y - circle_y2_reg) * (y - circle_y2_reg) + (x - circle_x2_reg) * (x - circle_x2_reg)) <= (CIRCLE_RADIUS * CIRCLE_RADIUS)) begin
+            red = CIRCLE_RGB;     // yellow circle (red + green)
+            green = CIRCLE_RGB;
+            blue = 8'h00;    
+        end else if(circle3_on && ((y - circle_y3_reg) * (y - circle_y3_reg) + (x - circle_x3_reg) * (x - circle_x3_reg)) <= (CIRCLE_RADIUS * CIRCLE_RADIUS)) begin
+            red = CIRCLE_RGB;     // yellow circle (red + green)
+            green = CIRCLE_RGB;
+            blue = 8'h00;        
+		   end else if(plus4_on) begin
+            red = CIRCLE_RGB;     // yellow circle (red + green)
+            green = CIRCLE_RGB;
+            blue = 8'h00;
+			end else if(plus5_on) begin
+            red = CIRCLE_RGB;     // yellow circle (red + green)
+            green = CIRCLE_RGB;
+            blue = 8'h00;		
+			end else if(plus6_on) begin
+            red = CIRCLE_RGB;     // yellow circle (red + green)
+            green = CIRCLE_RGB;
+            blue = 8'h00;				
+			end else if(plus7_on) begin
+            red = CIRCLE_RGB;     // yellow circle (red + green)
+            green = CIRCLE_RGB;
+            blue = 8'h00;				
+        end else if (in_rocket_tip) begin
+            red = 8'h00;
+            green = 8'hff;
+            blue = 8'h00;
+        end else if (rocket_body) begin
+            red = 8'h00;    // rocket body
+            green = 8'hff;
+            blue = 8'h00;
+        end else begin
+            red = BG_RED;         // blue background
+            green = BG_GREEN;
+            blue = BG_BLUE;
+        end
+    end
+endmodule
