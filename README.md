@@ -12,3 +12,4 @@ The vga_controller.v file contains the connections between different files relat
 
 The clock_divider.v file is used to convert the board's internal frequency of 50 MHz to 1 Hz, as the original frequency is too high for the game.
 
+![fpga_example](https://github.com/user-attachments/assets/fe31aec1-6efa-4de5-977d-32b6a936e6b3)
