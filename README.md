@@ -11,3 +11,4 @@ The lfsr.v file ensures the random generation of asteroids and communicates the 
 The vga_controller.v file contains the connections between different files related to VGA display.
 
 The clock_divider.v file is used to convert the board's internal frequency of 50 MHz to 1 Hz, as the original frequency is too high for the game.
+
